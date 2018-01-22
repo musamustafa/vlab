@@ -1,0 +1,14 @@
+---
+
+- name: Check if dest directory is present
+  file: path={{ config_dir }} state=directory
+  run_once: true
+
+- name: Getting Config from Juniper devices ... please wait
+  junos_get_config:
+    host={{ junos_host }}
+    port={{ netconf_port }}
+    user={{ junos_username }}
+    passwd={{ junos_passwd }}
+    dest={{ config_dir }}/{{ config_file }}
+    logfile=/tmp/ansible.changes.log

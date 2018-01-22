@@ -1,0 +1,9 @@
+---
+  - name: Git push to JCL Git server
+    hosts: juniper
+    connection: local
+    tasks: 
+     - command: git add .
+     - command: git commit -m "Commit snapshot"
+     - command: git push git@10.19.6.74:{{ reservation_user }}/{{ DirName }}.git master
+    run_once: true

@@ -1,0 +1,5 @@
+netconf_port: 830
+build_dir: ansible_build
+config_file: "{{ aliase }}.conf"
+config_dir: config_from_devices
+config_templatized_dir: config_templatized

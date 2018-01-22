@@ -1,0 +1,53 @@
+- name: Connect to Spirent Chassis
+  connection: local
+  uri:
+    url: http://{{ ansible_ssh_host }}:{{ rest_port }}/stcapi/connections
+    method: POST
+    HEADER_Content-Type: "application/x-www-form-urlencoded"
+    HEADER_X-STC-API-Session: "{{ session_id }}"
+    body: "action=connect&{{ spirent_ctrl }}"
+    return_content: yes
+    status_code: 201
+
+- name: Get portlist handle from lab server
+  connection: local
+  uri:
+    url: http://{{ ansible_ssh_host }}:{{ rest_port }}/stcapi/objects/project1?children-port
+    method: GET
+    HEADER_X-STC-API-Session: "{{ session_id }}"
+    return_content: yes
+    status_code: 200
+  register: json_response
+  run_once: true
+
+- name: Initiate Variable to store portlist handle
+  connection: local
+  set_fact: portlist={{ json_response.content | replace('\"', '') }}
+  run_once: true
+
+- name: Initiate Port Name
+  set_fact: portnumber="{% for thishost in play_hosts %}{% if inventory_hostname==thishost %}{{ portnumber + loop.index }}{% endif %}{% endfor %}"
+
+- name: Build portList in lab server
+  connection: local
+  uri:
+    url: http://{{ ansible_ssh_host }}:{{ rest_port }}/stcapi/objects/{{ aliase }}/
+    method: PUT
+    HEADER_Content-Type: "application/x-www-form-urlencoded"
+    HEADER_X-STC-API-Session: "{{ session_id }}"
+    body: "location={{ portaddress }}"
+    return_content: yes
+    status_code: 204
+
+- name: Reserve Spirent Ports
+  connection: local
+  uri:
+    url: http://{{ ansible_ssh_host }}:{{ rest_port }}/stcapi/perform
+    method: POST
+    HEADER_Content-Type: "application/x-www-form-urlencoded"
+    HEADER_X-STC-API-Session: "{{ session_id }}"
+    body: "command=attachports&portlist={{ portlist }}"
+    return_content: yes
+    status_code: 200
+  when: portnumber | int ==  play_hosts | length
+

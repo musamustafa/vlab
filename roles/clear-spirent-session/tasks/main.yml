@@ -1,0 +1,16 @@
+---
+
+- name: Deleting existing session
+  uri:
+    url: http://{{ ansible_ssh_host }}:{{ rest_port }}/stcapi/sessions/{{ session_id | urlencode }}
+    method: DELETE
+    status_code: 204
+  run_once: true
+  when: session_id != ""
+
+- name: Pause
+  pause: 
+    seconds: 20
+  run_once: true
+  when: session_id != ""
+    

@@ -1,0 +1,30 @@
+---
+- name: Get Current Spirent Config
+  connection: local
+  uri:
+    url: http://{{ ansible_ssh_host }}:{{ rest_port }}/stcapi/sessions
+    method: GET
+    return_content: yes
+    status_code: 200
+  register: json_response
+  run_once: true
+  
+- name: Response for POST ReST call
+  connection: local
+  set_fact: current_session={{ json_response.content | replace('\"', '') | replace('[', '') | replace(']', '') }}
+
+- name: Save Spirent Config into Lab server
+  connection: local
+  uri:
+    url: http://{{ ansible_ssh_host }}:{{ rest_port }}/stcapi/perform
+    method: POST
+    HEADER_Content-Type: "application/x-www-form-urlencoded"
+    HEADER_X-STC-API-Session: "{{ current_session }}"
+    body: "command=saveasxml&filename=/home/stcapi/savespirent.xml"
+    return_content: yes
+    status_code: 200
+  run_once: true
+
+- name: Fetch saved xml file from lab server
+  fetch: dest=spirent.xml src=/home/stcapi/savespirent.xml fail_on_missing=yes flat=yes
+  run_once: true

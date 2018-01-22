@@ -1,0 +1,14 @@
+---
+
+- name: Get information for existing session
+  uri:
+    url: http://{{ ansible_ssh_host }}:{{ rest_port }}/stcapi/sessions/
+    method: GET
+    status_code: 200
+    return_content: yes
+  register: json_response
+  run_once: true
+
+- name: Set variable
+  set_fact: session_id={{ json_response.content | replace('\"', '') | replace('[', '') | replace(']', '') }}
+  run_once: true

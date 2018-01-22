@@ -1,0 +1,24 @@
+---
+  - name: Save config from Juniper devices
+    hosts: juniper
+    pre_tasks:
+     - name: Getting encrypted password from device
+       script: ./get-encrypted-password.py --host {{ junos_host }} --username {{ junos_username }} --password {{ junos_passwd }}
+       register: result
+     - set_fact: encrypted_password={{ result.stdout | replace('\n', '') | replace(' ', '') | replace('$', '\$') }}
+    roles:
+     - get-junos-config
+     - templatize
+    connection: local
+    gather_facts: yes
+
+  - name: Spirent ReST Calls to save Spirent config
+    become: yes
+    hosts: spirent
+    gather_facts: no
+
+    roles:
+     - save-spirent-config
+     - get-spirent-session
+     - spirent-controller-quit
+
