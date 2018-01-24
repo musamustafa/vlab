@@ -1,22 +1,28 @@
 ---
-- name: Create project on JCL Git Server
-  uri:
-    url: http://10.100.9.74/api/v4/projects?private_token={{ api_access_token }}
-    method: POST
-    status_code: 201
-    body: "visibility={{ visibility }}&default_branch=master&path={{ Dir_Name }}"
-    return_content: yes
-  register: json_response
-  run_once: true
-
-- name: Get ssh url to created repo
-  
-
 - name: Git push to JCL Git server
-  hosts: juniper
+  hosts: 127.0.0.1
   connection: local
-  tasks: 
+  tasks:
+   - name: Create project on JCL Git Server
+     uri:
+       url: http://10.100.9.74/api/v4/projects?private_token={{ api_access_token }}
+       method: POST
+       status_code: 201
+       body: "visibility={{ visibility }}&default_branch=master&path={{ Dir_Name }}"
+       return_content: yes
+     register: json_response
+     run_once: true
+
+   - name: Get ssh url to created repo
+     set_fact: git_repo="{{ (json_response.content | from_json ).ssh_url_to_repo }}"
+     run_once: true
+
+   - name: Debug
+     debug: msg={{ git_repo }}
+     run_once: true
+  
    - command: git add .
-   - command: git commit -m "Commit snapshot"
-   - command: git push git@10.19.6.74:{{ reservation_user }}/{{ DirName }}.git master
-  run_once: true
+   - command: git commit -m "Commit Snapshot"
+#   - command: git remote rename origin old-origin
+#   - command: git remote add origin {{ git_repo }}
+ 
