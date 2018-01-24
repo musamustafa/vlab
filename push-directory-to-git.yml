@@ -23,5 +23,6 @@
   
    - command: git add .
    - command: git commit -m "Commit Snapshot"
+     ignore_errors: yes
    - command: git push {{ git_repo }} master
  
