@@ -3,8 +3,9 @@
   uri:
     url: http://{{ ansible_ssh_host }}:{{ rest_port }}/stcapi/connections
     method: POST
-    HEADER_Content-Type: "application/x-www-form-urlencoded"
-    HEADER_X-STC-API-Session: "{{ session_id }}"
+    headers:
+      Content-Type: "application/x-www-form-urlencoded"
+      X-STC-API-Session: "{{ session_id }}"
     body: "action=connect&{{ spirent_ctrl }}"
     return_content: yes
     status_code: 201
@@ -14,7 +15,8 @@
   uri:
     url: http://{{ ansible_ssh_host }}:{{ rest_port }}/stcapi/objects/project1?children-port
     method: GET
-    HEADER_X-STC-API-Session: "{{ session_id }}"
+    headers: 
+      X-STC-API-Session: "{{ session_id }}"
     return_content: yes
     status_code: 200
   register: json_response
@@ -33,8 +35,9 @@
   uri:
     url: http://{{ ansible_ssh_host }}:{{ rest_port }}/stcapi/objects/{{ aliase }}/
     method: PUT
-    HEADER_Content-Type: "application/x-www-form-urlencoded"
-    HEADER_X-STC-API-Session: "{{ session_id }}"
+    headers:
+      Content-Type: "application/x-www-form-urlencoded"
+      X-STC-API-Session: "{{ session_id }}"
     body: "location={{ portaddress }}"
     return_content: yes
     status_code: 204
@@ -44,8 +47,9 @@
   uri:
     url: http://{{ ansible_ssh_host }}:{{ rest_port }}/stcapi/perform
     method: POST
-    HEADER_Content-Type: "application/x-www-form-urlencoded"
-    HEADER_X-STC-API-Session: "{{ session_id }}"
+    headers: 
+      Content-Type: "application/x-www-form-urlencoded"
+      X-STC-API-Session: "{{ session_id }}"
     body: "command=attachports&portlist={{ portlist }}"
     return_content: yes
     status_code: 200
