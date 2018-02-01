@@ -3,9 +3,10 @@
   uri:
     url: http://{{ ansible_ssh_host }}:{{ rest_port }}/stcapi/perform
     method: POST
-    HEADER_Content-Type: "application/x-www-form-urlencoded"
-    HEADER_X-STC-API-Session: "{{ session_id }}"
-    HEADER_Content-Length: 40
+    headers:
+      Content-Type: "application/x-www-form-urlencoded"
+      X-STC-API-Session: "{{ session_id }}"
+      Content-Length: 40
     body: "command=loadfromxml&filename=spirent.xml"
     return_content: yes
     status_code: 200
