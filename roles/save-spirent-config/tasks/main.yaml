@@ -18,8 +18,9 @@
   uri:
     url: http://{{ ansible_ssh_host }}:{{ rest_port }}/stcapi/perform
     method: POST
-    HEADER_Content-Type: "application/x-www-form-urlencoded"
-    HEADER_X-STC-API-Session: "{{ current_session }}"
+    headers:
+      Content-Type: "application/x-www-form-urlencoded"
+      X-STC-API-Session: "{{ current_session }}"
     body: "command=saveasxml&filename=/home/stcapi/savespirent.xml"
     return_content: yes
     status_code: 200
