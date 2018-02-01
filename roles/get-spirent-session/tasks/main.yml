@@ -7,6 +7,7 @@
     status_code: 200
     return_content: yes
   register: json_response
+  connection: local
   run_once: true
 
 - name: Set variable
