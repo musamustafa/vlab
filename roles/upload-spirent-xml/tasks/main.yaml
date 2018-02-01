@@ -3,9 +3,10 @@
   uri:
     url: http://{{ ansible_ssh_host }}:{{ rest_port }}/stcapi/files/spirent.xml
     method: PUT
-    HEADER_Content-Type: "application/octet-stream"
-    HEADER_content-disposition: attachment; filename=spirent.xml
-    HEADER_X-STC-API-Session: "{{ session_id }}"
+    header:
+      Content-Type: "application/octet-stream"
+      content-disposition: attachment; filename=spirent.xml
+      X-STC-API-Session: "{{ session_id }}"
     body: "{{ lookup('file','spirent.xml') }}"
     return_content: yes
     status_code: 201
