@@ -4,7 +4,8 @@
   uri:
     url: http://{{ ansible_ssh_host }}:{{ rest_port }}/stcapi/sessions
     method: POST
-    HEADER_Content-Type: "application/x-www-form-urlencoded"
+    headers:
+      Content-Type: "application/x-www-form-urlencoded"
     body: "userid=Administrator&sessionname={{ spirent_session_name }}"
     return_content: yes
     status_code: 201
