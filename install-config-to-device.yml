@@ -30,5 +30,6 @@
     - get-spirent-session
     - upload-spirent-xml
     - load-spirent-xml
+    - set-spirent-license
     - reserve-spirent-port
     - spirent-controller-quit

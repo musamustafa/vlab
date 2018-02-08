@@ -1,0 +1,48 @@
+- name: Get license parent object
+  connection: local
+  uri:
+    url: http://{{ ansible_ssh_host }}:{{ rest_port }}/stcapi/objects/system1?children-licenseservermanager
+    method: GET
+    headers:
+      X-STC-API-Session: "{{ session_id }}"
+    return_content: yes
+    status_code: 200
+  register: result
+  run_once: true
+
+- name: Set variable 
+  connection: local
+  set_fact: license_parent={{ result.content | replace('\"', '') }}
+
+- name: debug
+  debug: msg={{ license_parent }}
+
+- name: Get license object from Spirent
+  connection: local
+  uri:
+    url: http://{{ ansible_ssh_host }}:{{ rest_port }}/stcapi/objects/{{ license_parent }}?children
+    method: GET
+    headers: 
+      X-STC-API-Session: "{{ session_id }}"
+    return_content: yes
+    status_code: 200
+  register: json_response
+  run_once: true
+
+- name: Initiate Variable to store license object
+  connection: local
+  set_fact: license_object={{ json_response.content | replace('\"', '') }}
+  run_once: true
+
+- name: Set license server address
+  connection: local
+  uri:
+    url: http://{{ ansible_ssh_host }}:{{ rest_port }}/stcapi/objects/{{ license_object }}/
+    method: PUT
+    headers:
+      Content-Type: "application/x-www-form-urlencoded"
+      X-STC-API-Session: "{{ session_id }}"
+    body: "Server=10.100.9.121"
+    return_content: yes
+    status_code: 204
+
