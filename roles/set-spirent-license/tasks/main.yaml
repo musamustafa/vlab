@@ -13,9 +13,7 @@
 - name: Set variable 
   connection: local
   set_fact: license_parent={{ result.content | replace('\"', '') }}
-
-- name: debug
-  debug: msg={{ license_parent }}
+  run_once: tru
 
 - name: Get license object from Spirent
   connection: local
