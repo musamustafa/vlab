@@ -1,15 +1,24 @@
 - name: Upload xml file to lab server
   connection: local
   uri:
-    url: http://{{ ansible_ssh_host }}:{{ rest_port }}/stcapi/files/spirent.xml
+    url: http://{{ ansible_ssh_host }}:{{ rest_port }}/stcapi/files/spirent
     method: PUT
     header:
-      Content-Type: "application/octet-stream"
-      content-disposition: attachment; filename=spirent.xml
+      content-type: application/octet-stream
+      content-disposition: attachment;filename=spirent
       X-STC-API-Session: "{{ session_id }}"
-    body: "{{ lookup('file','spirent.xml') }}"
+    body: "{{ lookup('file','spirent') }}"
+    timeout: 120
     return_content: yes
     status_code: 201
   run_once: true
+  ignore_errors: true
 
+- name: shell test
+  connection: local
+  shell: curl -X POST --data-binary "@spirent.xml" -H "X-STC-API-Session:{{ session_id }}" -H "content-type:application/octet-stream" -H "content-disposition:attachment;filename=spirent" http://"{{ ansible_ssh_host }}":"{{ rest_port }}"/stcapi/files
+  run_once: true
+  register: result
 
+- name: debug
+  debug: msg={{ result }}

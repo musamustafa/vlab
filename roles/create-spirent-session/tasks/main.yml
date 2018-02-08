@@ -11,4 +11,12 @@
     status_code: 201
   run_once: true
 
+- name: Pause
+  pause:
+    seconds: 5
+  run_once: true
+
+- name: debug
+  debug: msg={{ session_id }}
+
 

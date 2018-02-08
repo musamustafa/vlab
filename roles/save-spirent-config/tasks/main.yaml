@@ -25,7 +25,20 @@
     return_content: yes
     status_code: 200
   run_once: true
+- name: show container
+  shell: docker ps -l -q
+  become: true
+  register: result
+  run_once: true
+- name: Set container id
+  set_fact:
+    container_id: "{{ result.stdout }}"
+  run_once: true
+- name: Copy xml file from container to lab server
+  shell: docker cp {{ container_id }}:/home/stcapi/savespirent.xml spirent.xml
+  become: true
+  run_once: true
 
 - name: Fetch saved xml file from lab server
-  fetch: dest=spirent.xml src=/home/stcapi/savespirent.xml fail_on_missing=yes flat=yes
+  fetch: dest=spirent.xml src=/home/jcluser/spirent.xml fail_on_missing=yes flat=yes
   run_once: true
