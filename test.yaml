@@ -1,0 +1,69 @@
+---
+- name: Ixia ReST Calls to Test
+  hosts: ixia
+  gather_facts: no
+  tasks:
+    - name: Get IxNetwork session
+      uri:
+        url: http://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/
+        method: GET
+        status_code: 200
+        return_content: yes
+      register: json_response
+      connection: local
+      run_once: true
+
+    - name: debug
+      debug: msg={{ json_response }}
+      run_once: true
+#    - name: Save config file
+#      uri: 
+#        url: http://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/operations/saveconfig
+#        method: POST
+#        headers:
+#          Content-Type: "application/octet-stream"
+#        body: "arg1=/api/v1/sessions/1/ixnetwork/files/ixiatest.ixncfg"
+#        body_format: raw
+#        status_code: 201
+#      register: response
+#      connection: local
+#      run_once: true
+
+#    - name: debug
+#      debug: msg={{ response }}
+#      run_once: true
+
+#    - name: Copy config file
+#      uri:
+#        url: http://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/operations/copyfile
+#        method: POST
+#        body: "windowsPathAndFileName='ixia.ixncfg'"
+#        status_code: 201
+#      register: response
+#      connection: local
+#      run_once: true
+#      tags: 
+#        - test
+#    - name: debug
+#      debug: msg={{ response }}
+#      run_once: true
+#      tags: 
+#        - test
+    - name: View config file
+      get_url:
+        url: http://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/files/2_port_base_config.ixncfg
+        dest: /root/JCL_Ansible_Playbooks/ixia.ixncfg  
+#        method: GET
+#        headers:
+#          Content-Type: "application/octet-stream"
+#          Content-disposition: attachment; filename=2_port_base_config.ixncfg
+#        status_code: 200
+      register: response
+      connection: local
+      run_once: true
+
+    - name: debug
+      debug: msg={{ response }}
+      run_once: true
+
+
