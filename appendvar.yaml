@@ -1,0 +1,25 @@
+---
+- name: Generate json body
+  hosts: ixia
+  gather_facts: no
+  connection: local
+  tasks:
+    - name: Initialize arg2 arg4 var
+      set_fact: 
+        arg2_var: []
+        arg4_var: 'true'
+    
+    - name: Initialize an empty list 
+      set_fact: 
+        address_list: []
+    - name: Initialize an empty dictionary
+      set_fact: 
+        address_dict: {}
+
+    - name: Initialize arg1 var
+      set_fact: 
+        arg1_var: {"arg1": "{{ portaddress }}", "arg2": "{{ cardaddress }}", "arg3": "{{ port }}" }
+    - name: debug
+      debug: msg={{ arg1_var }}
+ 
+
