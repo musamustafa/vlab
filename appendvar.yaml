@@ -8,18 +8,86 @@
       set_fact: 
         arg2_var: []
         arg4_var: 'true'
+        arg1_var_list: []
+        arg3: []
     
-    - name: Initialize an empty list 
-      set_fact: 
-        address_list: []
-    - name: Initialize an empty dictionary
-      set_fact: 
-        address_dict: {}
-
     - name: Initialize arg1 var
       set_fact: 
         arg1_var: {"arg1": "{{ portaddress }}", "arg2": "{{ cardaddress }}", "arg3": "{{ port }}" }
     - name: debug
       debug: msg={{ arg1_var }}
- 
+    
+    - name: Concatenate
+      set_fact: 
+        arg1_var_list={% for thishost in play_hosts %}{% if arg1_var_list.append(hostvars[thishost]['arg1_var']) %}{% endif %}{% endfor %}"{{ arg1_var_list }}"
+      run_once: true
+
+    - name: debug
+      debug: msg={{ arg1_var_list }}
+
+    - name: Initialize arg3
+      set_fact: 
+        arg3_temp="{{ 'http://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/vport/{{ aliase_number }}' }}"
+    - name: debug
+      debug: msg={{ arg3_temp }}
+    - name: args value
+      set_fact:
+        arg3={% for thishost in play_hosts %}{% if arg3.append(hostvars[thishost]['arg3_temp']) %}{% endif %}{% endfor %}"{{ arg3 }}"
+      run_once: true
+
+    - name: dbug
+      debug: msg={{ arg3 }}
+
+
+    - name: form the rest body
+      set_fact: 
+        rest_body: {"arg1": "{{ arg1_var_list }}", "arg2": "{{ arg2_var }}", "arg3": "{{ arg3 }}", "arg4": "{{ arg4_var }}"} 
+    - name: debug
+      debug: msg={{ rest_body }}
+
+    - name: Upload config file
+      shell: curl -X POST --data-binary "@ixia.ixncfg" -H "content-type:application/octet-stream" -H "content-disposition:attachment;filename=spirent" http://"{{ ansible_ssh_host }}":"{{ rest_port }}"/api/v1/sessions/1/ixnetwork/files?filename=ixia.ixncfg
+      connection: local
+      run_once: true
+
+    - name: load config file
+      uri:
+        url: http://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/operations/loadconfig
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body:
+          arg1:
+             /api/v1/sessions/1/ixnetwork/files/ixia.ixncfg
+        body_format: json
+        status_code: 202
+      register: response
+      connection: local
+      run_once: true
+
+    - name: debug
+      debug: msg={{ response }}
+      run_once: true
+
+    - name: Pause
+      pause:
+        seconds: 80
+      run_once: true
+
+    - name: Assign Ports
+      uri:
+        url: http://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/operations/assignports
+        method: POST
+        headers:
+          Content-Type: "application/json"
+        body: "{{ rest_body }}"
+        body_format: json
+        status_code: 202
+      register: response
+      connection: local
+      run_once: true
+
+    - name: debug
+      debug: msg={{ response }}
+      run_once: true
 
