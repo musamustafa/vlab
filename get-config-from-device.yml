@@ -22,3 +22,11 @@
      - get-spirent-session
      - spirent-controller-quit
 
+  - name: Ixia ReST Calls to save ixia config as ixncfg
+    become: yes
+    hosts: ixia
+    gather_facts: no
+
+    roles:
+     - save-ixia-config
+

@@ -33,3 +33,10 @@
     - set-spirent-license
     - reserve-spirent-port
     - spirent-controller-quit
+
+- name: Ixia ReST Calls to Load config and reserve ports
+  become: yes
+  hosts: ixia
+  gather_facts: no
+  roles:
+    - load-ixia-config

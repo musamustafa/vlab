@@ -17,17 +17,6 @@
       debug: msg={{ json_response }}
       run_once: true
 
-#    - name: upload config file
-#      uri:
-#        url: http://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/files?filename=ixia.ixncfg
-#        method: POST
-#        headers:
-#          Content-Type: "application/octet-stream"
-#        body: "{{ lookup('file', 'ixia.ixncfg') }}"
-#        status_code: 201
-#      register: response
-#      connection: local
-#      run_once: true
     - name: Upload config file 
       shell: curl -X POST --data-binary "@ixia.ixncfg" -H "content-type:application/octet-stream" -H "content-disposition:attachment;filename=spirent" http://"{{ ansible_ssh_host }}":"{{ rest_port }}"/api/v1/sessions/1/ixnetwork/files?filename=ixia.ixncfg
       connection: local
@@ -87,8 +76,7 @@
         method: POST
         headers:
           Content-Type: "application/json"
-        body: >
-          {"arg1": [{"arg1": '100.123.37.1', "arg2": '1', "arg3": '1'}, {"arg1": '100.123.37.0', "arg2": '1', "arg3": '1'}], "arg2": [], "arg3": ['http://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/vport/1', 'http://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/vport/2'], "arg4": 'true'}
+        body:  "{{ rest_body }}"
         body_format: json
         status_code: 202
       register: response
