@@ -68,10 +68,11 @@ This role is using Spirent ReST API: POST http://host.domain/stcapi/perform
 ## reserve-spirent-port
 
 #### API
-This role is using Spirent ReST API: POST http://host.domain/stcapi/connections  
-                                     GET  http://host.domain/stcapi/objects/project1?children-port  
-									 PUT  http://host.domain/stcapi/objects/{{ port }}  
-									 POST http://host.domain/stcapi/perform
+This role is using Spirent ReST API:   
+Connect to Spirent chassis: POST http://host.domain/stcapi/connections  
+Get portlist handle from lab server: GET  http://host.domain/stcapi/objects/project1?children-port  
+Assign ports in lab server: PUT  http://host.domain/stcapi/objects/{{ port }}  
+Reserve ports: POST http://host.domain/stcapi/perform
 
 ## get-spirent-session
 
@@ -91,9 +92,10 @@ This role is using Spirent ReST API: DELETE http://host.domain/stcapi/sessions/{
 ## set-spirent-license
 
 #### API
-This role is using Spirent ReST API: GET http://host.domain/stcapi/objects/system1?children-licenseservermanager , return license_parent  
-                                     GET http://host.domain/stcapi/objects/{{ license_parent }}?children, return license_object  
-                                     PUT http://host.domain/stcapi/objects/{{ license_object }}
+This role is using Spirent ReST API:  
+Get license_parent object: GET http://host.domain/stcapi/objects/system1?children-licenseservermanager  
+Get license object: GET http://host.domain/stcapi/objects/{{ license_parent }}?children  
+Set Spirent license server IP: PUT http://host.domain/stcapi/objects/{{ license_object }}
 
 
 ## spirent-controller-quit
@@ -104,7 +106,7 @@ This role is using Spirent ReST API: DELETE http://host.domain/stcapi/sessions/{
 ## load-ixia-config
 
 #### API
-This role is using Ixia ReST API
+This role is using Ixia ReST API  
 Upload config file to REST server: POST http://host.domain/api/v1/sessions/1/ixnetwork/files?filename=ixia.ixncfg  
 Load config file: POST http://host.domain/api/v1/sessions/1/ixnetwork/operations/loadconfig  
 Assign Ports: POST http://host.domain/api/v1/sessions/1/ixnetwork/operations/assignports
