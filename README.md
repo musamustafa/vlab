@@ -68,9 +68,9 @@ This role is using Spirent ReST API: POST http://host.domain/stcapi/perform
 ## reserve-spirent-port
 
 #### API
-This role is using Spirent ReST API: POST http://host.domain/stcapi/connections
-                                     GET  http://host.domain/stcapi/objects/project1?children-port
-									 PUT  http://host.domain/stcapi/objects/{{ port }}
+This role is using Spirent ReST API: POST http://host.domain/stcapi/connections  
+                                     GET  http://host.domain/stcapi/objects/project1?children-port  
+									 PUT  http://host.domain/stcapi/objects/{{ port }}  
 									 POST http://host.domain/stcapi/perform
 
 ## get-spirent-session
@@ -91,8 +91,8 @@ This role is using Spirent ReST API: DELETE http://host.domain/stcapi/sessions/{
 ## set-spirent-license
 
 #### API
-This role is using Spirent ReST API: GET http://host.domain/stcapi/objects/system1?children-licenseservermanager , return license_parent
-                                     GET http://host.domain/stcapi/objects/{{ license_parent }}?children, return license_object
+This role is using Spirent ReST API: GET http://host.domain/stcapi/objects/system1?children-licenseservermanager , return license_parent  
+                                     GET http://host.domain/stcapi/objects/{{ license_parent }}?children, return license_object  
                                      PUT http://host.domain/stcapi/objects/{{ license_object }}
 
 
@@ -105,8 +105,8 @@ This role is using Spirent ReST API: DELETE http://host.domain/stcapi/sessions/{
 
 #### API
 This role is using Ixia ReST API
-Upload config file to REST server: POST http://host.domain/api/v1/sessions/1/ixnetwork/files?filename=ixia.ixncfg
-Load config file: POST http://host.domain/api/v1/sessions/1/ixnetwork/operations/loadconfig
+Upload config file to REST server: POST http://host.domain/api/v1/sessions/1/ixnetwork/files?filename=ixia.ixncfg  
+Load config file: POST http://host.domain/api/v1/sessions/1/ixnetwork/operations/loadconfig  
 Assign Ports: POST http://host.domain/api/v1/sessions/1/ixnetwork/operations/assignports
 
 ## save-ixia-config
