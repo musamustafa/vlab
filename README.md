@@ -1,4 +1,4 @@
-### 1 - Pull config from Juniper device and Spirent and then templatize
+### 1 - Pull config from Juniper device and Ixia/Spirent and then templatize
 ```
 ansible-playbook get-config-from-device.yml 
 ```
@@ -6,9 +6,9 @@ ansible-playbook get-config-from-device.yml
 ```
 ansible-playbook push-directory-to-git.yml --extra-vars "DirName=<YourGitRepositoryName>"
 ```
-### 3 - Push config to Juniper and spirent devices
+### 3 - Push config to Juniper and ixia/spirent devices
 ```  
-ansible-playbook push-config-to.yml
+ansible-playbook install-config-to-device.yml
 ```
 
 # Ansible roles available in this project
