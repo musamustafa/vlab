@@ -8,7 +8,7 @@
        url: https://10.100.9.74/api/v4/projects?private_token={{ api_access_token }}
        method: POST
        status_code: 201
-       body: "visibility={{ visibility }}&default_branch=master&path={{ Dir_Name }}"
+       body: "visibility={{ visibility }}&default_branch=master&path={{ DirName }}"
        return_content: yes
        validate_certs: False
      register: json_response
