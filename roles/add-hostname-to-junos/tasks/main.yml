@@ -1,0 +1,24 @@
+---
+- name: Checking NETCONF connectivity
+  wait_for: host={{ junos_host }} port=830  timeout=10
+- name: Get file from /etc/jcl-hosts
+  copy: 
+    src: "{{ hosts_dir }}/{{ jcl_hosts_file }}"
+    dest: "{{ hosts_file }}"
+  run_once: true
+- name: Adding hostname mapping to Junos
+  junos_scp_file:
+      host: "{{ junos_host }}"
+      user: "{{ junos_username }}"
+      passwd: "{{ junos_passwd }}"
+      file: "{{ hosts_file }}"
+      type: put
+      local_dir: "."
+      remote_dir: "{{ hosts_dir }}"
+      logfile: "{{ log_file }}"
+  when: inventory_hostname in groups['juniper']
+- name: Clear file
+  file: 
+    path: "{{ hosts_file }}"
+    state: absent
+  run_once: true
