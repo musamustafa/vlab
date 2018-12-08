@@ -21,6 +21,14 @@
 - name: mgmt_ip Templatizer
   replace: dest={{ config_templatized_dir }}/{{ config_file }} regexp="{{ junos_host }}/{{ mgmt_sub_mask }}" replace="{{ '{{ junos_host }}/{{ mgmt_sub_mask }}' }}"
 
+- name: IntUplinkIPAddress Templatizer
+  replace: dest={{ config_templatized_dir }}/{{ config_file }} regexp={{ IntUplinkIPAddress }} replace="{{ '{{ IntUplinkIPAddress }}' }}"
+  when: IntUplinkIPAddress is defined
+
+- name: IntUplinkIPNextHop Templatizer
+  replace: dest={{ config_templatized_dir }}/{{ config_file }} regexp={{ IntUplinkIPNextHop }} replace="{{ '{{ IntUplinkIPNextHop }}' }}"
+  when: IntUplinkIPNextHop is defined
+
 - name: Gateway Templatizer
   replace: dest={{ config_templatized_dir }}/{{ config_file }} regexp={{ mgmt_sub_gw }} replace="{{ '{{ mgmt_sub_gw }}'}}"
 
