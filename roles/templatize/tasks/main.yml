@@ -11,7 +11,7 @@
   replace: dest={{ config_templatized_dir }}/{{ config_file }} regexp={{ item.value.name }} replace="{{ '{{ topo[inventory_hostname]["'}}{{ item.key }}{{ '"]["name"]'}} }}"
   with_dict: "{{ topo[inventory_hostname] | default({}) }}"
   when: item is defined
-
+  
 - name: Hostname Templatizer
   replace: dest={{ config_templatized_dir }}/{{ config_file }} regexp={{ inventory_hostname }} replace="{{ '{{ inventory_hostname }}'}}"
 
@@ -20,6 +20,11 @@
 
 - name: mgmt_ip Templatizer
   replace: dest={{ config_templatized_dir }}/{{ config_file }} regexp="{{ junos_host }}/{{ mgmt_sub_mask }}" replace="{{ '{{ junos_host }}/{{ mgmt_sub_mask }}' }}"
+
+- name: Publicip Templatizer
+  replace: dest={{ config_templatized_dir }}/{{ config_file }} regexp={{ item.value }} replace="{{ '{{ publicip["'}}{{ item.key}}{{ '"]'}}  }}"
+  with_dict: "{{ publicip }}"
+  when: item is defined
 
 - name: IntUplinkIPAddress Templatizer
   replace: dest={{ config_templatized_dir }}/{{ config_file }} regexp={{ IntUplinkIPAddress }} replace="{{ '{{ IntUplinkIPAddress }}' }}"
