@@ -17,13 +17,26 @@
 - name: debug
   debug: msg={{ response }}
   run_once: true
+ 
+- name: check if ixia.ixncfg already exists
+  stat: path="{{ playbook_dir }}/ixia.ixncfg"
+  register: file_stat
+  connection: local
+  run_once: true
+
+- name: rename file if it exist
+  command: mv ixia.ixncfg ixia-previous.ixncfg
+  when: file_stat.stat.exists
+  connection: local
+  run_once: true
 
 - name: Download ixia config file
   get_url:
     url: http://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/files/ixia.ixncfg
-    dest: /root/JCL_Ansible_Playbooks/ixia.ixncfg
+    dest: "{{ playbook_dir }}/ixia.ixncfg"
   register: response
   connection: local
   run_once: true
+
 
 
