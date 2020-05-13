@@ -30,10 +30,3 @@
     roles:
      - save-ixia-config
 
-  - name: CyberFlood ReST Calls to save CyberFlood config as cyberflood.zip
-    become: yes
-    hosts: cyberflood
-    gather_facts: no
-    
-    roles:
-     - save-cyberflood-config

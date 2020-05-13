@@ -40,10 +40,3 @@
   gather_facts: no
   roles:
     - load-ixia-config
-
-- name: CyberFlood ReST Calls to Load Config
-  become: yes
-  hosts: cyberflood
-  gather_facts: no
-  roles:
-    - load-cyberflood-config
