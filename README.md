@@ -13,7 +13,7 @@ ansible-playbook get-config-from-device.yml
 ```
 ansible-playbook push-directory-to-git.yml --extra-vars "DirName=<YourGitRepositoryName>"
 ```
-### 3 - Push config to Juniper and ixia/spirent devices
+### 3 - Push config to Juniper and ixia/spirent devices([install-config-to-device.yml](/docs/playbook-docs/install-config-to-device_README.md))
 ```  
 ansible-playbook install-config-to-device.yml
 ```
