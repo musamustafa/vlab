@@ -1,6 +1,13 @@
-### 1 - Pull config from Juniper device and Ixia/Spirent and then templatize
+# JCL_Ansible_Playbooks
+This project is allowing config of Juniper device, Spirent TestCenter, and Ixia IxLoad to be saved, and templatized. It also enables the config to be re-pushed in a new sandbox for the same blueprint(topology).
+
+## Prerequisite
+This project works together with HelperVM. HelperVM comes up with ansible inventory files(under /etc/ansible) for the project to consume.
+
+
+### 1 - Pull config from Juniper device and Ixia/Spirent, and then templatize
 ```
-ansible-playbook get-config-from-device.yml
+ansible-playbook get-config-from-device.yml([get-config-from-device.yml](/docs/playbook-docs/get-config_README.md))
 ```
 ### 2 - Push the current directory to customized JCL Git Server
 ```
