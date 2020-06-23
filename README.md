@@ -5,9 +5,9 @@ This project is allowing config of Juniper device, Spirent TestCenter, and Ixia 
 This project works together with HelperVM. HelperVM comes up with ansible inventory files(under /etc/ansible) for the project to consume.
 
 
-### 1 - Pull config from Juniper device and Ixia/Spirent, and then templatize
+### 1 - Pull config from Juniper device and Ixia/Spirent, and then templatize([get-config-from-device.yml](/docs/playbook-docs/get-config_README.md))
 ```
-ansible-playbook get-config-from-device.yml([get-config-from-device.yml](/docs/playbook-docs/get-config_README.md))
+ansible-playbook get-config-from-device.yml
 ```
 ### 2 - Push the current directory to customized JCL Git Server
 ```
