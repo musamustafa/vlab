@@ -9,7 +9,7 @@ This project works together with HelperVM. HelperVM comes up with ansible invent
 ```
 ansible-playbook get-config-from-device.yml
 ```
-### 2 - Push the current directory to customized JCL Git Server
+### 2 - Push the current directory to customized JCL Git Server([push-directory-to-git.yml](/docs/playbook-docs/push-directory-to-git_README.md))
 ```
 ansible-playbook push-directory-to-git.yml --extra-vars "DirName=<YourGitRepositoryName>"
 ```
