@@ -1,0 +1,9 @@
+---
+- name: Configure VXLAN and VM start scripts
+  template:
+    src: nvhost_rc.local.j2
+    dest: /etc/rc.d/rc.local
+    mode: 0755 
+- name: Run rc.local
+  command: /etc/rc.d/rc.local
+  become: yes
