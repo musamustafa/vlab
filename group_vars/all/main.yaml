@@ -6,3 +6,4 @@ junos_conf: "{{ junos_conf_dir }}/{{ junos_conf_file }}"
 netconf_port: 830
 spirent_session_name: JCLSession
 visibility: private
+status: 0
