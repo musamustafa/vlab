@@ -1,0 +1,34 @@
+---
+- name: playbook to renew serial ID
+  hosts: _vMX_NV
+  connection: local
+  become: yes
+  gather_facts: false
+  roles:
+    - Juniper.junos
+
+  tasks:
+    - name: Remove existing serial ID
+      juniper_junos_rpc:
+        user: "{{junos_username }}"
+        passwd: "{{ junos_passwd }}"
+        rpc: 'request-shell-execute'
+        kwarg:
+          command: "sed -i \'\'  \'/hwchassisserialid/d\' /boot/vmguest.conf"
+
+
+    - name: Rebooting the vMX_NVs
+      juniper_junos_system:
+        user: "{{junos_username }}"
+        passwd: "{{ junos_passwd }}"
+        action: "reboot"
+
+    - name: NOTE
+      debug: 
+        msg: "WAIT TWO MINUTES FOR DEVICES TO COMPLETE THE REBOOT"
+
+
+
+
+
+    
