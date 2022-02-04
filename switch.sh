@@ -28,7 +28,7 @@ if test -f "/etc/ansible/hosts.underscore.bak"; then
     cp /etc/ansible/hosts.underscore.bak /etc/ansible/hosts
 else
     echo "Underscore Inventory backup not present"
-    cat /etc/ansible/hosts | sed 's/\(\[.*\)-/\1_/g' > /etc/ansible/hosts.underscore.bak
+    cat /etc/ansible/hosts | sed 's/^\(\[.*\)-/\1_/g' | sed 's/^\(.*\)-/\1_/g' > /etc/ansible/hosts.underscore.bak
     cp /etc/ansible/hosts.underscore.bak /etc/ansible/hosts
     echo "Underscore origin Inventory created and switched"
 fi
