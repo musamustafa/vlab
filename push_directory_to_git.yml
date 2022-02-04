@@ -1,4 +1,9 @@
 ---
+- name: JCL Banner
+  hosts: 127.0.0.1
+  gather_facts: no
+  roles:
+    - jcl_banner
 - name: Git push to JCL Git server
   hosts: 127.0.0.1
   connection: juniper.device.pyez
