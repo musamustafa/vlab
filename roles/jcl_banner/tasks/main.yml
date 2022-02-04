@@ -2,22 +2,20 @@
 # tasks file for jcl_banner
 - name: Pause and Display Banner
   pause:
-    seconds: 1
+    seconds: 8
     prompt: |
-           __            _                    ________                __   __         __
-          / /_  ______  (_)___  ___  _____   / ____/ /___  __  ______/ /  / /  ____ _/ /_  _____
-     __  / / / / / __ \/ / __ \/ _ \/ ___/  / /   / / __ \/ / / / __  /  / /  / __ `/ __ \/ ___/
-    / /_/ / /_/ / / / / / /_/ /  __/ /     / /___/ / /_/ / /_/ / /_/ /  / /__/ /_/ / /_/ (__  )
-    \____/\__,_/_/ /_/_/ .___/\___/_/      \____/_/\____/\__,_/\__,_/  /_____|__,_/_.___/____/
-                      /_/
-- name: Pause and Display Banner
-  pause:
-    seconds: 5
-    prompt: |
-    This is the new python3 only release of JCL Ansible Playbooks with support for collections.
-    python2 playbooks will not run as intended in this mode.
-    If you intend to run it with older version of JCL Ansible Playbooks, run the following command
-       -------------------
-     / source switch.sh /
-    -------------------
-    in the playbook directory. It will replace the hosts file and change the environment variables.
+          /////////////////
+                   __            _                    ________                __   __         __        
+                  / /_  ______  (_)___  ___  _____   / ____/ /___  __  ______/ /  / /  ____ _/ /_  _____
+             __  / / / / / __ \/ / __ \/ _ \/ ___/  / /   / / __ \/ / / / __  /  / /  / __ `/ __ \/ ___/
+            / /_/ / /_/ / / / / / /_/ /  __/ /     / /___/ / /_/ / /_/ / /_/ /  / /__/ /_/ / /_/ (__  ) 
+            \____/\__,_/_/ /_/_/ .___/\___/_/      \____/_/\____/\__,_/\__,_/  /_____|__,_/_.___/____/  
+                              /_/                                                                       
+          /////////////////
+          This is the new python3 only release of JCL Ansible Playbooks with support for collections.
+          python2 playbooks will not run as intended in this mode.
+          If you intend to run it with older version of JCL Ansible Playbooks, run the following command
+                                   -------------------
+                                 / source switch.sh /
+                                -------------------
+          in the playbook directory. It will replace the hosts file and change the environment variables.
