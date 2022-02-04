@@ -1,6 +1,0 @@
----
-- name: Restart service stcapi
-  service: name=stcapi state=restarted sleep=5
-- name: Pause for 10s
-  wait_for: timeout=20 
-

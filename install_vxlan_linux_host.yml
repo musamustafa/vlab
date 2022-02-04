@@ -1,0 +1,6 @@
+---
+- name: Install VXLAN config to linux host
+  hosts: nvhost
+  gather_facts: no
+  roles:
+    - load_vxlan_nv_host 

@@ -1,0 +1,6 @@
+---
+# vars file for getjunosconfroles
+host: "{{ junos_host }}"
+port: "{{ netconf_port }}"
+user: "{{ junos_username }}"
+passwd: "{{ junos_passwd }}"

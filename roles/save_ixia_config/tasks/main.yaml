@@ -1,0 +1,38 @@
+---
+- name: Save config file
+  uri:
+    url: http://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/operations/saveconfig
+    method: POST
+    headers:
+      Content-Type: "application/json"
+    body:
+      arg1:
+        /api/v1/sessions/1/ixnetwork/files/ixia.ixncfg
+    body_format: json
+    status_code: 202
+  register: response
+  connection: juniper.device.pyez
+  run_once: true
+ 
+- name: check if ixia.ixncfg already exists
+  stat: path="{{ playbook_dir }}/ixia.ixncfg"
+  register: file_stat
+  connection: juniper.device.pyez
+  run_once: true
+
+- name: rename file if it exist
+  command: mv ixia.ixncfg ixia-previous.ixncfg
+  when: file_stat.stat.exists
+  connection: juniper.device.pyez
+  run_once: true
+
+- name: Download ixia config file
+  get_url:
+    url: http://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/files/ixia.ixncfg
+    dest: "{{ playbook_dir }}/ixia.ixncfg"
+  register: response
+  connection: juniper.device.pyez
+  run_once: true
+
+
+

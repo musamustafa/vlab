@@ -1,0 +1,72 @@
+---
+# tasks file for junos_upgrade
+- name: Diffrentiate between vmhost and regular upgrade
+  connection: juniper.device.pyez
+  juniper.device.rpc:
+    rpcs: "get-vmhost-information"
+  register: check_vmhost_response
+  ignore_errors: True
+- debug: msg="{{ check_vmhost_response.stdout.split('\n') }}"
+- name: Predefine rpc to vmhost call
+  set_fact:
+    rpc_string: "request-vmhost-package-add"
+- name: Check if it is a regular install.
+  block:
+    - name: Print install Method
+      debug: msg="Regular Install"
+    - name: Set RPC call
+      set_fact:
+        rpc_string: "request-package-add"
+  when: "check_vmhost_response.stdout.find('v=' ~ 'Unrecognized command') == -1"
+- name: Selected RPC
+  debug:
+    var: rpc_string
+- name: Retrieve facts from devices running Junos OS
+  juniper.device.facts:
+- name: Print current version
+  debug:
+    var: junos.version
+- name: Send RPC to scoped Junos Devices
+  connection: juniper.device.pyez
+  juniper.device.rpc:
+    rpcs: "{{ rpc_string }}"
+    kwargs:
+      - package-name: "{{ file_url }}/{{ filename }}"
+        reboot: True
+        unlink : true
+  register: upgrade_response
+  async: 900
+  poll: 0
+# - name: Print Response
+#   debug:
+#     var: upgrade_response
+
+
+
+# - name: Wait for rpc port to close
+#   connection: juniper.device.pyez
+#   wait_for:
+#     port: "{{ netconf_port }}"
+#     state: stopped
+#     delay: 360
+
+# - name: Wait for RPC response.
+#   async_status:
+#     jid: "{{ upgrade_response.ansible_job_id }}"
+#   register: upgrade_result
+#   until: upgrade_result.finished
+#   retries: 20
+#   delay: 10
+
+- name: Wait for connection
+  connection: juniper.device.pyez
+  wait_for:
+    port: "{{ netconf_port }}"
+    delay: 900
+    timeout: 3600
+
+- name: Retrieve facts from devices running Junos OS
+  juniper.device.facts:
+- name: Print version
+  debug:
+    var: junos.version

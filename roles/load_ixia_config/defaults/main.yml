@@ -1,0 +1,7 @@
+---
+# defaults file for load-ixia-config
+netconf_port: 830
+config_file: "{{ inventory_hostname }}.conf"
+config_dir: config_from_devices
+log_dir: ReST_logs
+log_file: "{{ inventory_hostname }}_log"

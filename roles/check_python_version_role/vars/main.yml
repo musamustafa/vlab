@@ -1,0 +1,7 @@
+---
+# vars file for check_python_version_role
+interpreter_python: /usr/bin/python3.9
+ansible_python_interpreter: /usr/bin/python
+
+
+

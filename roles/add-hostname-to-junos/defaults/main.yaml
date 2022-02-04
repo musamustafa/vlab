@@ -1,5 +1,0 @@
-netconf_port: 830
-log_file: "{{ inventory_hostname }}.log"
-hosts_dir: /etc
-hosts_file: hosts
-jcl_hosts_file: jcl-hosts

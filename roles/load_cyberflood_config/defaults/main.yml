@@ -1,0 +1,5 @@
+---
+# defaults file for load-cyberflood-config
+api_url: "https://{{ ansible_ssh_host }}/api/v2/"
+config_dir: config_from_devices
+config_file: "cyberflood.zip"

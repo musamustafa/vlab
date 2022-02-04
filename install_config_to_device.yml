@@ -1,0 +1,50 @@
+---
+- name: Push config to device
+  hosts: juniper
+  connection: local
+  gather_facts: false
+  collections:
+    - juniper.device
+  pre_tasks:
+    - name: Clean up base interface config to load new configuration
+      script: ./python_scripts/config_cleanup.py --host {{ junos_host }} --username {{ junos_username }} --password {{ junos_passwd }}
+      register: result
+      when: "'QFX' in group_names"
+    - name: Get current encrypted password for junos device
+      script: ./python_scripts/get-encrypted-password.py --host {{ junos_host }} --username {{ junos_username }} --password {{ junos_passwd }}
+      register: result
+    - set_fact: encrypted_password={{ result.stdout | replace('\n', '') | replace(' ', '') }}
+  roles:
+    - build_junos_config
+    - push_junos_config
+
+- name: Spirent ReST Calls to Load config and reserve ports
+  become: yes
+  hosts: spirent
+  gather_facts: no
+  vars:
+    portnumber: 0
+    session_id: "{{ spirent_session_name }}"
+  roles:
+    - get_spirent_session
+    - clear_spirent_session
+    - create_spirent_session
+    - get_spirent_session
+    - upload_spirent_xml
+    - load_spirent_xml
+    - set_spirent_license
+    - reserve_spirent_port
+    - spirent_controller_quit
+
+- name: Ixia ReST Calls to Load config and reserve ports
+  become: yes
+  hosts: ixia
+  gather_facts: false
+  roles:
+    - load_ixia_config
+- name: CyberFlood ReST Calls to Load Config
+  become: yes
+  hosts: cyberflood
+  gather_facts: no
+  roles:
+    - load_cyberflood_config

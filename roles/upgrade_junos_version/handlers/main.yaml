@@ -1,3 +1,0 @@
-- name: wait_reboot
-  wait_for: host={{ inventory_hostname }} port=830 timeout={{ wait_time }}
-  when: not sw.check_mode

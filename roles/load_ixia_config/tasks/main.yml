@@ -1,0 +1,39 @@
+---
+# tasks file for load-ixia-config
+- name: Upload config file
+  shell: curl -X POST --data-binary "@ixia.ixncfg" -H "content-type:application/octet-stream" -H "content-disposition:attachment;filename=spirent" http://"{{ ansible_ssh_host }}":"{{ rest_port }}"/api/v1/sessions/1/ixnetwork/files?filename=ixia.ixncfg
+  connection: juniper.device.pyez
+  run_once: true
+
+- name: load config file
+  uri:
+    url: http://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/operations/loadconfig
+    method: POST
+    headers:
+      Content-Type: "application/json"
+    body:
+      arg1:
+        /api/v1/sessions/1/ixnetwork/files/ixia.ixncfg
+    body_format: json
+    status_code: 202
+  register: response
+  connection: juniper.device.pyez
+  run_once: true
+
+- name: Pause for config to be loaded
+  pause:
+    seconds: 80
+  run_once: true
+
+- name: Assign Ports
+  uri:
+    url: http://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/operations/assignports
+    method: POST
+    headers:
+      Content-Type: "application/json"
+    body:  "{{ rest_body }}"
+    body_format: json
+    status_code: 202
+  register: response
+  connection: juniper.device.pyez
+  run_once: true

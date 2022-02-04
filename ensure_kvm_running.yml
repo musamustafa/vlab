@@ -1,0 +1,6 @@
+---
+- name: Make sure vm inside NV host is running
+  hosts: nvhost
+  gather_facts: no
+  roles:
+    - kvm_vm_running

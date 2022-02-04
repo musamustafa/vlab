@@ -1,0 +1,72 @@
+---
+- name: Authenticate with CyberFlood
+  uri:
+    url: "{{ api_url }}token"
+    method: POST
+    force_basic_auth: yes
+    user: "{{ ansible_ssh_user }}"
+    password: "{{ ansible_ssh_pass }}"
+    status_code: 201
+    validate_certs: no
+    timeout: 10
+  register: auth_ret
+  connection: juniper.device.pyez
+  run_once: true
+
+- name: Get All Test
+  uri:
+    url: "{{ api_url }}/tests"
+    method: GET
+    headers:
+      Authorization: "Bearer {{ auth_ret.json.token }} "
+    status_code: 200
+    validate_certs: no
+    timeout: 10
+  register: test_ret
+  connection: juniper.device.pyez
+  run_once: true
+  
+- name: Initialize an empty list for our tests
+  set_fact:
+    tests: []
+  connection: juniper.device.pyez
+  run_once: true
+    
+- name: Add all tests to list
+  set_fact:
+    tests: "{{ tests  + [item.id] }}"
+  with_items: "{{ test_ret.json }}"
+  connection: juniper.device.pyez
+  run_once: true
+
+- name: Create test export
+  uri:
+    url: "{{ api_url }}/tests/exports"
+    method: POST
+    headers:
+      Authorization: "Bearer {{ auth_ret.json.token }} "
+    body:
+      testIds: "{{ tests }}"
+      type: "avn"
+    body_format: json
+    status_code: 201
+    validate_certs: no
+    timeout: 20
+  register: export_ret
+  connection: juniper.device.pyez
+  run_once: true
+
+- name: Download test export
+  uri:
+    url: "{{ api_url }}/tests/exports/{{ export_ret.json.id }}/download"
+    method: GET
+    headers:
+      Authorization: "Bearer {{ auth_ret.json.token }} "
+    status_code: 200
+    validate_certs: no
+    dest: "{{ playbook_dir }}/{{ config_file }}"
+    return_content: yes
+    timeout: 10
+  register: download_ret
+  connection: juniper.device.pyez
+  run_once: true
