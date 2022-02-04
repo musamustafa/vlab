@@ -1,5 +1,5 @@
 #!/bin/bash
-deactivate
+source deactivate
 _script="$(readlink -f ${BASH_SOURCE[0]})"
 _base="$(dirname $_script)"
 
@@ -9,7 +9,7 @@ echo "Script location path (dir) : $_base"
 
 cd $_base
 ln -fs /usr/bin/python3 /usr/bin/python
-source .venv/python3/bin/activate
+source ~/.venv/python3/bin/activate
 git checkout collections
 
 python --version
