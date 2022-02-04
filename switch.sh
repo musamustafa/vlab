@@ -27,5 +27,5 @@ if test -f "/etc/ansible/hosts.hyphen.bak"; then
     echo "Hyphen origin Inventory backup present, restoring"
     cp /etc/ansible/hosts.hyphen.bak /etc/ansible/hosts
 else
-    echo "hyphen Inventory backup not present"
+    echo "Hyphen Inventory backup not present"
 fi

@@ -58,12 +58,12 @@
 #   retries: 20
 #   delay: 10
 
-- name: Wait for connection
-  connection: juniper.device.pyez
-  wait_for:
-    port: "{{ netconf_port }}"
-    delay: 900
-    timeout: 3600
+# - name: Wait for connection
+#   connection: juniper.device.pyez
+#   wait_for:
+#     port: "{{ netconf_port }}"
+#     delay: 900
+#     timeout: 3600
 
 - name: Retrieve facts from devices running Junos OS
   juniper.device.facts:
