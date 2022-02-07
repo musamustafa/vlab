@@ -12,7 +12,7 @@
             \____/\__,_/_/ /_/_/ .___/\___/_/      \____/_/\____/\__,_/\__,_/  /_____|__,_/_.___/____/
                               /_/
           /////////////////
-          This is the older python2 only release of JCL Ansible Playbooks.
+          !!!!!!!!!!!!This is the older python2 only release of JCL Ansible Playbooks.!!!!!!!!!!!!!
           We have a NEW VERSION of JCL Ansible Playbooks which use python3 and ansible collections.
           python3 playbooks will not run in this mode.
           We encourage you to use the version of JCL Ansible Playbooks, run the following command
