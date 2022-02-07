@@ -1,4 +1,9 @@
 ---
+- name: JCL Banner
+  hosts: 127.0.0.1
+  gather_facts: no
+  roles:
+    - jcl-banner
 - name: Push config to device
   hosts: juniper
   connection: local
@@ -14,7 +19,7 @@
     - set_fact: encrypted_password={{ result.stdout | replace('\n', '') | replace(' ', '') }}
   roles:
     - build-junos-config
-    - push-junos-config 
+    - push-junos-config
 
 - name: Spirent ReST Calls to Load config and reserve ports
   become: yes

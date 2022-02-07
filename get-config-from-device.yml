@@ -1,4 +1,9 @@
 ---
+  - name: JCL Banner
+    hosts: 127.0.0.1
+    gather_facts: no
+    roles:
+      - jcl-banner
   - name: Save config from Juniper devices
     hosts: juniper
     pre_tasks:
@@ -34,6 +39,6 @@
     become: yes
     hosts: cyberflood
     gather_facts: no
-    
+
     roles:
      - save-cyberflood-config
