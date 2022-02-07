@@ -36,7 +36,7 @@
          command: git checkout --orphan sandbox_master
          run_once: true
          ignore_errors: yes
-     when: remote_origin_url | regex_search(".*\/"+DirName+"\.git$") == ''
+     when: remote_origin_url | regex_search(".*\/"+DirName+"\.git$") == none
    - name: Push changes if remote origin url is not JCL default.
      block:
        - name: Git add All files
