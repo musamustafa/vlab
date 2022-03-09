@@ -31,6 +31,7 @@
     portnumber: 0
     session_id: "{{ spirent_session_name }}"
   roles:
+    - check_python_version_role
     - get_spirent_session
     - clear_spirent_session
     - create_spirent_session
