@@ -1,6 +1,0 @@
-config_from_devices/*
-config_templatized/*
-*flood.zip
-*.xml
-*.ixncfg
-ansible_build/*
