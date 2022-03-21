@@ -18,5 +18,5 @@ ansible --version
 
 if test -f "/etc/ansible/hosts.underscore.bak"; then
     echo "Underscore origin Inventory backup present, switching"
-    cp /etc/ansible/hosts.underscore.bak /etc/ansible/hosts
+    cp -f /etc/ansible/hosts.underscore.bak /etc/ansible/hosts
 fi
