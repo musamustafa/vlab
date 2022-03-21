@@ -18,5 +18,5 @@ ansible --version
 
 if test -f "/etc/ansible/hosts.hyphen.bak"; then
     echo "hyphen origin Inventory backup present, switching"
-    cp /etc/ansible/hosts.hyphen.bak /etc/ansible/hosts
+    cp -f /etc/ansible/hosts.hyphen.bak /etc/ansible/hosts
 fi
