@@ -29,7 +29,7 @@
 
   - name: Ixia ReST Calls to save ixia config as ixncfg
     become: yes
-    hosts: ixia
+    hosts: IxiaGUI
     gather_facts: no
 
     roles:
