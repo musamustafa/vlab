@@ -47,4 +47,4 @@
     validate_certs: no
     dest: "{{ playbook_dir }}/ixia.ixncfg"
   register: response
-  connection: juniper.device.pyez
+  connection: local
