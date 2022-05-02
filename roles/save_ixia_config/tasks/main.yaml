@@ -1,8 +1,7 @@
 ---
 - name: Define URL
   set_fact:
-    conf_url: "{{ 'http://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/operations/saveconfig' if VersionSelected =
-= 8.31 else 'https://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/operations/saveconfig' }}"
+    conf_url: "{{ 'http://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/operations/saveconfig' if VersionSelected == 8.31 else 'https://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/operations/saveconfig' }}"
 
 - name: Display URL
   debug: msg={{ conf_url }}
