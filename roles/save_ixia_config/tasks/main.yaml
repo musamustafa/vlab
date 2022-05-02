@@ -1,9 +1,9 @@
 ---
-- name: Define URL
+- name: Define conf_url
   set_fact:
     conf_url: "{{ 'http://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/operations/saveconfig' if VersionSelected == 8.31 else 'https://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/operations/saveconfig' }}"
 
-- name: Display URL
+- name: Display conf_url
   debug: msg={{ conf_url }}
 
 - name: Save config file
@@ -31,9 +31,16 @@
   when: file_stat.stat.exists
   connection: juniper.device.pyez
 
+- name: Define download_url
+  set_fact:
+    download_url: "{{ 'http://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/files/ixia.ixncfg' if VersionSelected == 8.31 else 'https://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/files/ixia.ixncfg' }}"
+- name: Display download_url
+  debug: msg={{ download_url }}
+
 - name: Download ixia config file
   get_url:
-    url: http://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/files/ixia.ixncfg
+    url: "{{ download_url }}"
+    validate_certs: no
     dest: "{{ playbook_dir }}/ixia.ixncfg"
   register: response
   connection: juniper.device.pyez
