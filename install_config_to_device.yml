@@ -44,10 +44,11 @@
 
 - name: Ixia ReST Calls to Load config and reserve ports
   become: yes
-  hosts: ixia
+  hosts: IxiaGUI
   gather_facts: false
   roles:
     - load_ixia_config
+
 - name: CyberFlood ReST Calls to Load Config
   become: yes
   hosts: cyberflood
