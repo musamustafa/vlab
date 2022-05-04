@@ -10,6 +10,7 @@
   uri:
     url: "{{ conf_url }}"
     validate_certs: no
+    use_proxy: no
     method: POST
     headers:
       Content-Type: "application/json"
@@ -44,6 +45,7 @@
   get_url:
     url: "{{ download_url }}"
     validate_certs: no
+    use_proxy: no
     dest: "{{ playbook_dir }}/ixia.ixncfg"
   register: response
   connection: local
