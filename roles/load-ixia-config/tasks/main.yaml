@@ -21,7 +21,6 @@
   uri:
     url: "{{ load_config_url }}"
     validate_certs: no
-    use_proxy: no
     method: POST
     headers:
       Content-Type: "application/json"
@@ -48,7 +47,6 @@
   uri:
     url: "{{ assign_ports_url }}"
     validate_certs: no
-    use_proxy: no
     method: POST
     headers:
       Content-Type: "application/json"
