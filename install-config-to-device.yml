@@ -41,7 +41,7 @@
 
 - name: Ixia ReST Calls to Load config and reserve ports
   become: yes
-  hosts: ixia
+  hosts: IxiaGUI
   gather_facts: no
   roles:
     - load-ixia-config

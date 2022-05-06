@@ -1,7 +1,15 @@
 ---
+- name: Define conf_url
+  set_fact:
+    conf_url: "{{ 'http://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/operations/saveconfig' if VersionSelected == 8.31 else 'https://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/operations/saveconfig' }}"
+
+- name: Display conf_url
+  debug: msg={{ conf_url }}
+
 - name: Save config file
   uri:
-    url: http://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/operations/saveconfig
+    url: "{{ conf_url }}"
+    validate_certs: no
     method: POST
     headers:
       Content-Type: "application/json"
@@ -12,31 +20,30 @@
     status_code: 202
   register: response
   connection: local
-  run_once: true
 
 - name: debug
   debug: msg={{ response }}
-  run_once: true
- 
+
 - name: check if ixia.ixncfg already exists
   stat: path="{{ playbook_dir }}/ixia.ixncfg"
   register: file_stat
   connection: local
-  run_once: true
 
 - name: rename file if it exist
   command: mv ixia.ixncfg ixia-previous.ixncfg
   when: file_stat.stat.exists
   connection: local
-  run_once: true
+
+- name: Define download_url
+  set_fact:
+    download_url: "{{ 'http://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/files/ixia.ixncfg' if VersionSelected == 8.31 else 'https://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/files/ixia.ixncfg' }}"
+- name: Display download_url
+  debug: msg={{ download_url }}
 
 - name: Download ixia config file
   get_url:
-    url: http://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/files/ixia.ixncfg
+    url: "{{ download_url }}"
+    validate_certs: no
     dest: "{{ playbook_dir }}/ixia.ixncfg"
   register: response
   connection: local
-  run_once: true
-
-
-
