@@ -1,7 +1,7 @@
 ---
 - name: Define shell_command
   set_fact:
-    shell_command: "{{ 'curl -k -X POST --data-binary \"@ixia.ixncfg\" -H \"content-type:application/octet-stream\" -H \"content-disposition:attachment;filename=spirent\" http://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/files?filename=ixia.ixncfg' if VersionSelected == 8.31 else 'curl -k -X POST --data-binary \"@ixia.ixncfg\" -H \"content-type:application/octet-stream\" -H \"content-disposition:attachment;filename=spirent\" https://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/files?filename=ixia.ixncfg' }}"
+    shell_command: "{{ 'curl -k -X POST --data-binary \"@ixia.ixncfg\" -H \"content-type:application/octet-stream\" http://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/files?filename=ixia.ixncfg' if VersionSelected == 8.31 else 'curl -k -X POST --data-binary \"@ixia.ixncfg\" -H \"content-type:application/octet-stream\" https://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/files?filename=ixia.ixncfg' }}"
 
 - name: Display shell_command
   debug: msg={{ shell_command }}
