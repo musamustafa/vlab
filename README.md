@@ -123,3 +123,25 @@ Assign Ports: POST http://host.domain/api/v1/sessions/1/ixnetwork/operations/ass
 #### API
 This role is using Ixia ReST API
 Save config as ixncfg file on REST server: POST http://host.domain/api/v1/sessions/1/ixnetwork/operations/saveconfig
+
+## load-vxlan-nv-host
+
+This role pushes vxlan configuration to the Linux NV host according to vxlan definition under /etc/ansible/group_vars/all/vxlannv.yaml. <br>
+
+To override the definition, a new definition can be added under group_vars/all/ in .yml format as below under the current working directory. It is important to have the definition key as vxlans. Sample definition: <br>
+
+    vxlans:
+      vQFX_NV-A1:
+        Port0:
+          peer: vQFX_NV-A2
+          pport: Port2
+          vni: 4008
+          ip: 10.44.0.1/30
+          peerip: 10.44.0.2
+      vQFX_NV-A2:
+        Port2:
+          peer: vQFX_NV-A1
+          pport: Port0
+          vni: 4008
+          ip: 10.44.0.2/30
+          peerip: 10.44.0.1
