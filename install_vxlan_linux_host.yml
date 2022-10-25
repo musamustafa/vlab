@@ -7,5 +7,9 @@
 - name: Install VXLAN config to linux host
   hosts: nvhost
   gather_facts: no
+  pre_tasks:
+    - name: update host ip
+      set_fact:
+        ansible_ssh_host: "{{ PrivateAddressHostVM }}"
   roles:
     - load_vxlan_nv_host
