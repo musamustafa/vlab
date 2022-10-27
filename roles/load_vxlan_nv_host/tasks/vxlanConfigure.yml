@@ -10,11 +10,6 @@
   debug:
     msg: "{{ 'VXLAN script execution failed' if (scriptOutput.rc != 0) else 'VXLAN script execution successful' }}"
 
-- name: Disable ansible host key checking
-  shell: "export ANSIBLE_HOST_KEY_CHECKING=False" 
-  delegate_to: localhost
-  when: scriptOutput.rc == 0
-
 - name: Run command "ip addr | grep vxlan" on host
   command: "ip addr | grep vxlan"
   args:

@@ -150,7 +150,6 @@ Get all tests: GET https://host.domain/api/v2//tests
 Create test export: POST https://host.domain/api/v2//tests/exports
 Download test export: GET https://host.domain/api/v2//tests/exports/{{ export_ret.json.id }}/download
 
-
 ## load_cyberflood_config
 
 #### API
@@ -158,10 +157,30 @@ This role is using Cyberflood ReST API:
 authenticate: POST https://host.domain/api/v2/token
 Upload tests to cyberflood: POST {{ api_url }}tests/imports?type=avn' --header 'Accept: application/json' --header 'Content-Type: multipart/form-data' --header 'Authorization: Bearer {{ auth_ret.json.token }}
 
-
-
 ## junos_upgrade
 
 #### Dependencies
 Read the README specific to the playbook. The Playbook might Fail.
 This role is dependent on collection **juniper.device > juniper.device.rpc** and **juniper.device > juniper.device.facts**
+
+## load_vxlan_nv_host
+
+This role pushes vxlan configuration to the Linux NV host according to vxlan definition under /etc/ansible/group_vars/all/vxlannv.yaml. <br>
+
+To override the definition, a new definition can be added under group_vars/all/ in .yml format as below under the current working directory. It is important to have the definition key as vxlans. Sample definition: <br>
+
+    vxlans:
+      vQFX_NV-A1:
+        Port0:
+          peer: vQFX_NV-A2
+          pport: Port2
+          vni: 4008
+          ip: 10.44.0.1/30
+          peerip: 10.44.0.2
+      vQFX_NV-A2:
+        Port2:
+          peer: vQFX_NV-A1
+          pport: Port0
+          vni: 4008
+          ip: 10.44.0.2/30
+          peerip: 10.44.0.1
