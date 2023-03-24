@@ -15,17 +15,16 @@ git checkout master
 python --version
 ansible --version
 
-echo "Checking for Underscore origin inventory backups"
+echo "Switching host inventory names - replacing Underscores with Hyphens.."
 if test -f "/etc/ansible/hosts.underscore.bak"; then
-    echo "Underscore origin Inventory backup present"
+    echo "Underscore host inventory backup present."
 else
     cp /etc/ansible/hosts /etc/ansible/hosts.underscore.bak
-    echo "Underscore origin Inventory backup created"
+    echo "Underscore host inventory backup created."
 fi
-echo "Attempting switching inventory files"
 if test -f "/etc/ansible/hosts.hyphen.bak"; then
-    echo "Hyphen origin Inventory backup present, restoring"
     cp /etc/ansible/hosts.hyphen.bak /etc/ansible/hosts
+    echo "Original Hyphen host inventory backup present. Switch success."
 else
-    echo "Hyphen Inventory backup not present"
+    echo "Original Hyphen host inventory backup not present."
 fi
