@@ -15,20 +15,38 @@ git checkout collections
 python --version
 ansible --version
 
-echo "Checking for Hyphen origin inventory backups"
+echo "Switching host inventory names - replacing Hyphens with Underscores.."
 if test -f "/etc/ansible/hosts.hyphen.bak"; then
-    echo "Underscore origin Inventory backup present"
+    echo "Hyphen host inventory backup present."
 else
-    cp /etc/ansible/hosts /etc/ansible/hosts.hyphen.bak
-    echo "Underscore origin Inventory backup created"
+    \cp /etc/ansible/hosts /etc/ansible/hosts.hyphen.bak
+    echo "Hyphen host inventory backup created."
 fi
-echo "Attempting switching inventory files"
 if test -f "/etc/ansible/hosts.underscore.bak"; then
-    echo "Underscore origin Inventory backup present, switching"
     cp /etc/ansible/hosts.underscore.bak /etc/ansible/hosts
+    echo "Underscore host inventory backup present. Switch success."
 else
-    echo "Underscore Inventory backup not present"
+    echo "Underscore host inventory backup not present."
     cat /etc/ansible/hosts | sed 's/^\(\[.*\)-/\1_/g' | sed 's/^\(.*\)-/\1_/g' > /etc/ansible/hosts.underscore.bak
     cp /etc/ansible/hosts.underscore.bak /etc/ansible/hosts
-    echo "Underscore origin Inventory created and switched"
+    echo "Underscore host inventory created. Switch success."
+fi
+
+if [[ -f "/etc/ansible/group_vars/all/vxlannv.yaml" ]]; then
+    # echo "Switching vxlan inventory names - replacing Hyphens with Underscores.."
+    if test -f "/etc/ansible/group_vars/all/vxlannv.hyphen.bak.yaml"; then
+        : # echo "Hyphen vxlan inventory backup present."
+    else
+        \cp /etc/ansible/group_vars/all/vxlannv.yaml /etc/ansible/group_vars/all/vxlannv.hyphen.bak.yaml
+        # echo "Hyphen vxlan inventory backup created."
+    fi
+    if test -f "/etc/ansible/group_vars/all/vxlannv.underscore.bak.yaml"; then
+        \cp /etc/ansible/group_vars/all/vxlannv.underscore.bak.yaml /etc/ansible/group_vars/all/vxlannv.yaml
+        # echo "Underscore vxlan inventory backup present. Switch success."
+    else
+        # echo "Underscore vxlan inventory backup not present."
+        cat /etc/ansible/group_vars/all/vxlannv.yaml | sed 's/^\(\[.*\)-/\1_/g' | sed 's/^\(.*\)-/\1_/g' > /etc/ansible/group_vars/all/vxlannv.underscore.bak.yaml
+        \cp /etc/ansible/group_vars/all/vxlannv.underscore.bak.yaml /etc/ansible/group_vars/all/vxlannv.yaml
+        # echo "Underscore vxlan inventory created. Switch success."
+    fi
 fi
