@@ -40,5 +40,6 @@
 - name: EncryptedPassword Templatizer
   replace: dest={{ config_templatized_dir }}/{{ config_file }} regexp="{{ encrypted_password }}" replace="{{ '{{ encrypted_password }}' }}"
 
-- name: ReservationUser Templatizer
-  replace: dest={{ config_templatized_dir }}/{{ config_file }} regexp="{{ reservation_user }}" replace="{{ '{{ reservation_user }}' }}"
+# No longer in use:
+# - name: ReservationUser Templatizer
+#   replace: dest={{ config_templatized_dir }}/{{ config_file }} regexp="{{ reservation_user }}" replace="{{ '{{ reservation_user }}' }}"
