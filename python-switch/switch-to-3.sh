@@ -12,5 +12,6 @@ ln -fs /usr/bin/python3 /usr/bin/python
 source ~/.venv/python3/bin/activate
 git checkout collections
 
+cd $PWD
 python --version
 ansible --version
