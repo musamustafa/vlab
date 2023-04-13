@@ -14,4 +14,3 @@ git checkout collections
 
 python --version
 ansible --version
-
