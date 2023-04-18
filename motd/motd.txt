@@ -1,7 +1,7 @@
 ####################################################################################
 Python 3.9 and Ansible 2.10 are now available on Helper-VM!!!
-To use this new environment, please refer to the KB article at https://services.jlabs.juniper.net/kb_view.do?sysparm_article=KB0011494
+To use this new environment, please refer to the KB article at https://services.jlabs.juniper.net/kb?id=kb_article_view&sysparm_article=KB0011573
 ####################################################################################
 
 KB article for info on how HelperVM is authenticated to Git:
-https://services.jlabs.juniper.net/kb_view.do?sysparm_article=KB0011573
+https://services.jlabs.juniper.net/kb?id=kb_article_view&sysparm_article=KB0011573
