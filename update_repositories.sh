@@ -64,7 +64,7 @@ for repo_path in  "$default_path"/*; do
    git $git_path remote add JCL "git@git.cloudlabs.juniper.net:JCL/JCL_Ansible_Playbooks.git"
    git $git_path fetch JCL
    git $git_path merge JCL/collections
-   git ls-tree --name-only JCL/collections | while read file; do if [ ! -f "$file" ]; then git checkout JKL/collections -- "$file"; fi; 
+   git ls-tree --name-only JCL/collections | while read file; do if [ ! -f "$file" ]; then git checkout JCL/collections -- "$file"; fi; 
 done;
    rm -rf $repo_path/motd
    echo -e "Added/updated Python3 supported files. Creating local commit Step 2/2.."
