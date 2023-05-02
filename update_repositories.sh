@@ -35,7 +35,7 @@ cd $default_path
 ##################################### git clone respos
 for clones in "${repo_array[@]}"; do
    echo -e "\n\nClone location: $default_path"
-   echo -e "\nAttempting to clone $clones.."
+   echo -e "Attempting to clone $clones.."
    git clone $clones
 done
 
@@ -43,9 +43,9 @@ done
 compare_file=$ansible_playbook_path/get_config_from_device.yml
 
 if test -f "$compare_file"; then
-echo -e "Found latest Python3 version of JCL_Ansible_Playbooks. Proceeding with update.."
+echo -e "\nFound latest Python3 version of JCL_Ansible_Playbooks. Proceeding with update.."
 else
-    echo "Getting latest Python3 version of JCL_Ansible_Playbooks.."
+    echo "\nGetting latest Python3 version of JCL_Ansible_Playbooks.."
     git $git_path_jcl checkout collections
 fi
 
@@ -56,7 +56,7 @@ for repo_path in  "$default_path"/*; do
    cp -rf $ansible_playbook_path/{activate.sh,ensure_kvm_running.yml,install_vxlan_linux_host.yml,README.md,switch.sh,ansible.cfg,get_config_from_device.yml,push_directory_to_git.yml,requirements.txt,upgrade_junos.yml,group_vars,python_scripts,roles,docs,install_config_to_device.yml,python_version_check.yml,shell_scripts} $repo_path
 
    echo -e "\nCompleted updating local repo *for $repo_path."
-   echo -e "\nEnter "yes" if you want to push updates to Git *for $repo_path: "
+   echo -e "Enter "yes" if you want to push updates to Git *for $repo_path: "
 
 ######################################### git push 
    read user_input
@@ -70,7 +70,7 @@ for repo_path in  "$default_path"/*; do
       rm -rf $repo_path
    else
       echo -e "\nGit push ABORTED *for $repo_path !"  
-      echo -e "\nIf you want to commit and push changes to this repo yourself, find the updated repo at $repo_path."
+      echo -e "If you want to commit and push changes to this repo yourself, find the updated repo at $repo_path."
    fi
 done
 echo -e "\nAny custom files in your repo will *not* be updated. You would need to manually update those files to support the latest versions of Ansible & Python(3)."
