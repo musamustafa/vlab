@@ -78,7 +78,7 @@ done;
    if [ $user_input == "yes" ]
    then
       git $git_path push
-      if [ $? -eq 0]; then
+      if [ $? -eq 0 ]; then
          echo -e "\nGit push SUCCESSFUL for $repo_path"
          echo -e "Deleting $repo_path"
          rm -rf $repo_path
