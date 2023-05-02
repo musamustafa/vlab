@@ -85,6 +85,7 @@ done;
       else
          echo -e "\nGit push FAILED for $repo_path"
          echo -e "Please MANUALLY resolve conflicts and push to Git. You can find the updated repo at $repo_path"
+      fi
    else
       echo -e "\nGit push ABORTED for $repo_path !"  
       echo -e "If you want to push changes to this repo yourself, find the updated repo at $repo_path"
