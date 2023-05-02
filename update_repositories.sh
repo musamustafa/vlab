@@ -18,8 +18,8 @@ git_path_jcl="--git-dir=$ansible_playbook_path/.git --work-tree=$ansible_playboo
 
 ##################################### user_input for repository list
 repo_array=()
-echo "Enter the repo clone URLs (SSH or HTTPS) for the repos that you want to update:
-(Press ctrl+D at the end of the list)\n"
+echo -e "Enter the repo clone URLs (SSH or HTTPS) for the repos that you want to update:
+(Press Enter + ctrl+D at the end of the list)\n"
 
 while read repo
 do
