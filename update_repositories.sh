@@ -55,7 +55,7 @@ for repo_path in  "$default_path"/*; do
 
    cp -rf $ansible_playbook_path/{activate.sh,ensure_kvm_running.yml,install_vxlan_linux_host.yml,README.md,switch.sh,ansible.cfg,get_config_from_device.yml,push_directory_to_git.yml,requirements.txt,upgrade_junos.yml,group_vars,python_scripts,roles,docs,install_config_to_device.yml,python_version_check.yml,shell_scripts} $repo_path
 
-   echo -e "\n***For $repo_path:"
+   echo -e "\n**** For $repo_path: ****"
    echo -e "\nCompleted updating local repo."
    echo -e "Enter "yes" if you want to push updates to Git for $repo_path: "
 
@@ -70,7 +70,7 @@ for repo_path in  "$default_path"/*; do
       echo -e "\nGit commit and push SUCCESSFUL for $repo_path."
       rm -rf $repo_path
    else
-      echo -e "\nGit push ABORTED *for $repo_path !"  
+      echo -e "\nGit push ABORTED for $repo_path !"  
       echo -e "If you want to commit and push changes to this repo yourself, find the updated repo at $repo_path."
    fi
 done
