@@ -1,12 +1,14 @@
 #!/bin/bash
 #####################################banner
 
-echo -e "  \n This script will replace all the existing Playbooks on your repository with newer Playbooks.
+echo -e "\nThis script will replace all existing JCL_Ansible_Playbooks in your specified repos, with the latest Python3 version of JCL_Ansible_Playbooks.
 
 The files/directories that will get affected: 
-ensure-kvm-running.yml, ansible.cfg, get-config-from-device.yml, install-config-to-device.yml, push-directory-to-git.yml, config_cleanup.py, get-encrypted-password.py, install-vxlan-linux-host.yml, README.md,docs, group_vars, library, roles, renew-serial-id-vMX_NV.yaml
+ensure-kvm-running.yml, ansible.cfg, get-config-from-device.yml, install-config-to-device.yml, push-directory-to-git.yml,
+config_cleanup.py, get-encrypted-password.py, install-vxlan-linux-host.yml, README.md,docs,
+group_vars, library, roles, renew-serial-id-vMX_NV.yaml
 
-   *Any custom configuration on those files on your repository will be affected* \n"
+   **Any custom modifications in the above file/directories in your repository will be lost!** \n"
 
 sleep 5 
 ##################################### vars
@@ -16,7 +18,8 @@ git_path_jcl="--git-dir=$ansible_playbook_path/.git --work-tree=$ansible_playboo
 
 ##################################### user_input for repository list
 repo_array=()
-echo "Enter the repository names: (Press ctrl+D at the end of the list)"
+echo -e $'Enter the repo clone URLs (SSH or HTTPS) for the repos that you want to update:
+(Press Enter, then, Ctrl+D at the end of the list)\n'
 
 while read repo
 do
@@ -31,43 +34,61 @@ cd $default_path
 
 ##################################### git clone respos
 for clones in "${repo_array[@]}"; do
+   echo -e "\n\nClone location: $default_path"
+   echo -e "Attempting to clone $clones.."
    git clone $clones
-   echo -e "\n$clones\n"
 done
 
 ###################################### file check conditions
 compare_file=$ansible_playbook_path/get_config_from_device.yml
 
 if test -f "$compare_file"; then
-echo -e "\nproceeding with update "
+echo -e "\nFound latest Python3 version of JCL_Ansible_Playbooks. Proceeding with update.."
 else
-    echo "activing virtual environment"
+    echo "\nGetting latest Python3 version of JCL_Ansible_Playbooks.."
     git $git_path_jcl checkout collections
 fi
 
 ######################################## copy and remove files
 for repo_path in  "$default_path"/*; do 
-   rm -rf $repo_path/{ensure-kvm-running.yml,ansible.cfg,get-config-from-device.yml,install-config-to-device.yml,push-directory-to-git.yml,config_cleanup.py,get-encrypted-password.py,install-vxlan-linux-host.yml,README.md,docs,group_vars,library,roles,renew-serial-id-vMX_NV.yaml}
+   rm -rf $repo_path/{ensure-kvm-running.yml,get-config-from-device.yml,install-config-to-device.yml,install-vxlan-linux-host.yml,push-directory-to-git.yml,renew-serial-id-vMX_NV.yaml,config_cleanup.py,get-encrypted-password.py,docs,group_vars,library,roles,README.md}
 
-   cp -rf $ansible_playbook_path/{activate.sh,ensure_kvm_running.yml,install_vxlan_linux_host.yml,README.md,switch.sh,ansible.cfg,get_config_from_device.yml,push_directory_to_git.yml,requirements.txt,upgrade_junos.yml,banner_test.yml,group_vars,python_scripts,roles,docs,install_config_to_device.yml,python_version_check.yml,shell_scripts} $repo_path
-   echo "$repo_path"
-   echo -e "\nEnter "yes" if you want to push changes to git $repo_path: "
+   #cp -rf $ansible_playbook_path/{ensure_kvm_running.yml,get_config_from_device.yml,install_config_to_device.yml,install_vxlan_linux_host.yml,push_directory_to_git.yml,python_version_check.yml,upgrade_junos.yml,docs,group_vars,python_scripts,roles,shell_scripts,README.md} $repo_path
 
+   echo -e "\n**** For $repo_path: ****"
+   echo -e "\nRemoved Python2 supported files. Creating local commit.."
+   git_path="--git-dir=$repo_path/.git --work-tree=$repo_path"
+   git $git_path add --all
+   git $git_path commit -m "Updated repo using update_repositories.sh - Removed Python2 supported files."
+
+   git $git_path remote add JCL "https://git.cloudlabs.juniper.net/JCL/JCL_Ansible_Playbooks.git"
+   git $git_path fetch JCL
+   git $git_path merge JCL/collections -m "Merging latest Python3 updates from JCL_Ansible_Playbooks official: collections branch"
+   git $git_path ls-tree --name-only JCL/collections | while read file; do if [ ! -f "$file" ]; then git $git_path checkout JCL/collections -- "$file"; echo -e "$file"; fi; 
+done;
+   rm -rf $repo_path/motd
+   echo -e "Added/updated Python3 supported files. Creating local commit Step.."
+   git $git_path add .
+   git $git_path commit -m "Updated repo using update_repositories.sh - Added/updated latest Python3 supported files."
+   echo -e "\nGit local commits SUCCESSFUL for $repo_path."
+
+   echo -e "\nEnter 'yes' if you want to push updates (now) to Git for $repo_path: "
 ######################################### git push 
    read user_input
    if [ $user_input == "yes" ]
    then
-      git_path="--git-dir=$repo_path/.git --work-tree=$repo_path"
-      git $git_path add --all
-      git $git_path commit -m "new ansible playbooks"
       git $git_path push
-      echo -e "\ngit push SUCCESSFUL\n"
-      rm -rf $repo_path
+      if [ $? -eq 0 ]; then
+         echo -e "\nGit push SUCCESSFUL for $repo_path"
+         echo -e "Deleting $repo_path"
+         rm -rf $repo_path
+      else
+         echo -e "\nGit push FAILED for $repo_path"
+         echo -e "Please MANUALLY resolve conflicts and push to Git. You can find the updated repo at $repo_path"
+      fi
    else
-      echo -e "\ngit push ABORTED"  
-      echo -e "\nIf you wish to push the changes yourselves on this repository,find it under $repo_path"
+      echo -e "\nGit push ABORTED for $repo_path !"  
+      echo -e "If you want to push changes to this repo yourself, find the updated repo at $repo_path"
    fi
 done
-echo -e "\nAny custom files on your repository will not be modified. Users need to upgrade those scripts/files to suppot newer version of Ansible & Python"
-
-    
+echo -e "\nAny custom files in your repo will *not* be updated. You would need to manually update those files to support the latest versions of Ansible & Python(3)."
