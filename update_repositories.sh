@@ -58,10 +58,10 @@ pted-password.py,docs,group_vars,library,roles,README.md}
 ,docs,group_vars,python_scripts,roles,shell_scripts,README.md} $repo_path
 
    echo -e "\n**** For $repo_path: ****"
-   echo -e "\nRemoved Python2 supported files. Creating local commit Step 1/2.."
+   echo -e "\nRemoved Python2 supported files. Creating local commit.."
    git_path="--git-dir=$repo_path/.git --work-tree=$repo_path"
    git $git_path add --all
-   git $git_path commit -m "Updated Ansible playbooks using update_repositories.sh - Step 1: Removed Python2 supported files from repo."
+   git $git_path commit -m "Updated repo using update_repositories.sh - Removed Python2 supported files."
 
    git $git_path remote add JCL "https://git.cloudlabs.juniper.net/JCL/JCL_Ansible_Playbooks.git"
    git $git_path fetch JCL
@@ -69,9 +69,9 @@ pted-password.py,docs,group_vars,library,roles,README.md}
    git $git_path ls-tree --name-only JCL/collections | while read file; do if [ ! -f "$file" ]; then git $git_path checkout JCL/collections -- "$file"; echo -e "$file"; fi; 
 done;
    rm -rf $repo_path/motd
-   echo -e "Added/updated Python3 supported files. Creating local commit Step 2/2.."
+   echo -e "Added/updated Python3 supported files. Creating local commit Step.."
    git $git_path add .
-   git $git_path commit -m "Updated Ansible playbooks using update_repositories.sh - Step 2: Added/updated Python3 supported files to repo."
+   git $git_path commit -m "Updated repo using update_repositories.sh - Added/updated latest Python3 supported files."
    echo -e "\nGit local commits SUCCESSFUL for $repo_path."
 
    echo -e "\nEnter 'yes' if you want to push updates (now) to Git for $repo_path: "
