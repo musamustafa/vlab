@@ -1,0 +1,19 @@
+---
+- name: create spirent session
+  connection: juniper.device.pyez
+  uri:
+    url: http://{{ ansible_ssh_host }}:{{ rest_port }}/stcapi/sessions
+    method: POST
+    headers:
+      Content-Type: "application/x-www-form-urlencoded"
+    body: "userid=Administrator&sessionname={{ spirent_session_name }}"
+    return_content: yes
+    status_code: 201
+    timeout: 60
+  run_once: true
+
+- name: Pause
+  pause:
+    seconds: 5
+  run_once: true
+

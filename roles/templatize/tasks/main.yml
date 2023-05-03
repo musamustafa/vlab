@@ -42,4 +42,4 @@
 
 # No longer in use:
 # - name: ReservationUser Templatizer
-#  replace: dest={{ config_templatized_dir }}/{{ config_file }} regexp="{{ reservation_user }}" replace="{{ '{{ reservation_user }}' }}"
+#   replace: dest={{ config_templatized_dir }}/{{ config_file }} regexp="{{ reservation_user }}" replace="{{ '{{ reservation_user }}' }}"

@@ -1,0 +1,49 @@
+---
+- name: JCL Banner
+  hosts: 127.0.0.1
+  gather_facts: no
+  roles:
+    - jcl_banner
+- name: Git push to JCL Git server
+  hosts: 127.0.0.1
+  connection: juniper.device.pyez
+  tasks:
+   - name: Git get remote url
+     shell: git config --get remote.origin.url
+     register: remote_origin_url
+   - name: Push Changes
+     block:
+       - name: Create project on JCL Git Server
+         uri:
+           url: https://git.cloudlabs.juniper.net/api/v4/projects?private_token={{ api_access_token }}
+           method: POST
+           status_code: 201
+           body: "visibility={{ visibility }}&default_branch=master&path={{ DirName }}"
+           return_content: yes
+           validate_certs: False
+         register: json_response
+         run_once: true
+       - name: Get ssh url to created repo
+         set_fact: git_repo="{{ (json_response.content | from_json ).ssh_url_to_repo }}"
+         run_once: true
+       - name: Debug
+         debug: msg={{ git_repo }}
+         run_once: true
+       - name: Git change remote url to User specific URL
+         command: git remote set-url origin {{ git_repo }}
+         run_once: true
+       - name: Git Create new sandbox_master branch without commit history
+         command: git checkout --orphan sandbox_master
+         run_once: true
+         ignore_errors: yes
+     when: remote_origin_url | regex_search(".*\/"+DirName+"\.git$") == none
+   - name: Push changes if remote origin url is not JCL default.
+     block:
+       - name: Git add All files
+         command: git add .
+       - name: Git commit
+         command: git commit -m "Commit Snapshot"
+         ignore_errors: yes
+       - name: Git push current branch to remote's master
+         command: git push origin HEAD:master
+     when: remote_origin_url | regex_search(":JCL\/JCL_Ansible_Playbooks\.git$") == none

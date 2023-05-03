@@ -1,0 +1,15 @@
+---
+- name: create dir to store the junos config files
+  file:
+    path: "{{ config_dir }}"
+    state: directory
+  run_once: true
+- name: get the conf and save
+  config:
+    retrieve: "committed"
+#    host: "{{ junos_host }}"
+#    port: "{{ netconf_port }}"
+#    user: "{{ junos_username }}"
+#    passwd: "{{ junos_passwd }}"
+    dest: "{{ config_dir }}/{{ config_file }}"
+    logfile: "/tmp/ansible.changes.log"

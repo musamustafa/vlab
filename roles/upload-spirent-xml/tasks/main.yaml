@@ -1,9 +1,0 @@
-- name: Upload xml file to lab server
-  connection: local
-  shell: curl -X POST --data-binary "@spirent.xml" -H "X-STC-API-Session:{{ session_id }}" -H "content-type:application/octet-stream" -H "content-disposition:attachment;filename=spirent" http://"{{ ansible_ssh_host }}":"{{ rest_port }}"/stcapi/files
-  run_once: true
-  register: result
-
-- name: REST Request result 
-  debug: msg={{ result.stdout }}
-  run_once: true

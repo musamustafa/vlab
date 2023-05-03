@@ -1,0 +1,28 @@
+---
+- name: JCL Banner
+  hosts: 127.0.0.1
+  gather_facts: no
+  roles:
+    - jcl_banner
+- name: Upgrade Junos devices
+  hosts: juniper
+  become: yes
+  connection: juniper.device.pyez
+  gather_facts: true
+  # vars:
+  #   ansible_command_timeout: 600
+  #   ansible_connect_retry_timeout: 180
+  vars_prompt:
+  - name: filename
+    prompt: Paste upgrade filename. e.g. junos-srxsme-20.2R2-S3.5.tgz
+    private: no
+  - name: file_url
+    prompt: Paste upgrade URL. e.g. ftp://ftp.cloudlabs.juniper.net/pub/junos/junos-srxsme/
+    private: no
+  pre_tasks:
+   - name: Getting encrypted password from device
+     script: ./python_scripts/get-encrypted-password.py --host {{ junos_host }} --username {{ junos_username }} --password {{ junos_passwd }}
+     register: result
+   - set_fact: encrypted_password={{ result.stdout | replace('\n', '') | replace(' ', '') | replace('$', '\$') }}
+  roles:
+   - junos_upgrade
