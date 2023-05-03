@@ -1,0 +1,44 @@
+---
+- name: Get Current Spirent Config
+  connection: juniper.device.pyez
+  uri:
+    url: http://{{ ansible_ssh_host }}:{{ rest_port }}/stcapi/sessions
+    method: GET
+    return_content: yes
+    status_code: 200
+  register: json_response
+  run_once: true
+  
+- name: Response for POST ReST call
+  connection: juniper.device.pyez
+  set_fact: current_session={{ json_response.content | replace('\"', '') | replace('[', '') | replace(']', '') }}
+
+- name: Save Spirent Config into Lab server
+  connection: juniper.device.pyez
+  uri:
+    url: http://{{ ansible_ssh_host }}:{{ rest_port }}/stcapi/perform
+    method: POST
+    headers:
+      Content-Type: "application/x-www-form-urlencoded"
+      X-STC-API-Session: "{{ current_session }}"
+    body: "command=saveasxml&filename=/home/stcapi/savespirent.xml"
+    return_content: yes
+    status_code: 200
+  run_once: true
+- name: show container
+  shell: docker ps -q -l
+  become: true
+  register: result
+  run_once: true
+- name: Set container id
+  set_fact:
+    container_id: "{{ result.stdout }}"
+  run_once: true
+- name: Copy xml file from container to lab server
+  shell: docker cp {{ container_id }}:/home/stcapi/savespirent.xml spirent.xml
+  become: true
+  run_once: true
+
+- name: Fetch saved xml file from lab server
+  fetch: dest=spirent.xml src=/home/jcluser/spirent.xml fail_on_missing=yes flat=yes
+  run_once: true

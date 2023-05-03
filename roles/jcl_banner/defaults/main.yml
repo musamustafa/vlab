@@ -1,0 +1,4 @@
+---
+# defaults file for jcl_banner
+ansible_color_console_prompt: red
+ansible_color_debug: red

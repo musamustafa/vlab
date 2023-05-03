@@ -1,0 +1,10 @@
+---
+
+- name: Clear stcapi as session controller
+  uri:
+    url: http://{{ ansible_ssh_host }}:{{ rest_port }}/stcapi/sessions/{{ session_id | urlencode }}?false
+    method: DELETE
+    status_code: 204
+    timeout: 70
+  run_once: true
+
