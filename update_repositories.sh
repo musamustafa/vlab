@@ -70,7 +70,7 @@ done;
    echo -e "Added/updated Python3 supported files. Creating local commit Step 2/2.."
    git $git_path add .
    git $git_path commit -m "Updated Ansible playbooks using update_repositories.sh - Step 2: Added/updated Python3 supported files to repo."
-   echo -e "nGit local commits SUCCESSFUL for $repo_path."
+   echo -e "\nGit local commits SUCCESSFUL for $repo_path."
 
    echo -e "\nEnter 'yes' if you want to push updates (now) to Git for $repo_path: "
 ######################################### git push 
