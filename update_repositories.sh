@@ -51,9 +51,11 @@ fi
 
 ######################################## copy and remove files
 for repo_path in  "$default_path"/*; do 
-   rm -rf $repo_path/{ensure-kvm-running.yml,get-config-from-device.yml,install-config-to-device.yml,install-vxlan-linux-host.yml,push-directory-to-git.yml,renew-serial-id-vMX_NV.yaml,config_cleanup.py,get-encrypted-password.py,docs,group_vars,library,roles,README.md}
+   rm -rf $repo_path/{ensure-kvm-running.yml,get-config-from-device.yml,install-config-to-device.yml,install-vxlan-linux-host.yml,push-directory-to-git.yml,renew-serial-id-vMX_NV.yaml,config_cleanup.py,get-encry
+pted-password.py,docs,group_vars,library,roles,README.md}
 
-   #cp -rf $ansible_playbook_path/{ensure_kvm_running.yml,get_config_from_device.yml,install_config_to_device.yml,install_vxlan_linux_host.yml,push_directory_to_git.yml,python_version_check.yml,upgrade_junos.yml,docs,group_vars,python_scripts,roles,shell_scripts,README.md} $repo_path
+   #cp -rf $ansible_playbook_path/{ensure_kvm_running.yml,get_config_from_device.yml,install_config_to_device.yml,install_vxlan_linux_host.yml,push_directory_to_git.yml,python_version_check.yml,upgrade_junos.yml
+,docs,group_vars,python_scripts,roles,shell_scripts,README.md} $repo_path
 
    echo -e "\n**** For $repo_path: ****"
    echo -e "\nRemoved Python2 supported files. Creating local commit.."
