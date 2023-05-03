@@ -1,0 +1,3 @@
+netconf_port: 830
+config_file: "{{ aliase }}.conf"
+config_dir: config_from_devices

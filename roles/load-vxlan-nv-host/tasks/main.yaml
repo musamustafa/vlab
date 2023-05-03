@@ -1,0 +1,20 @@
+---
+
+- name: Copy VXLAN script
+  template:
+    src: nvhost_rc.local.j2
+    dest: /etc/rc.d/rc.local
+    mode: 0755 
+
+- name: Import tasks
+  import_tasks: vxlanConfigure.yml
+  
+- name: Running script second time if VXLAN tunnel is down
+  debug:
+    msg: "Running VXLAN script second time"
+  when: status == 1
+
+- name: Import tasks again if VXLAN tunnel is down
+  import_tasks: vxlanConfigure.yml
+  when: status == 1
+

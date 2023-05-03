@@ -1,0 +1,10 @@
+# Variables defined in this file will be used as default value with playing this role
+# they can easily be overwritten by any other variables define in :
+#  - Inventory file
+#  - Host_vars
+#  - group_vars
+
+netconf_port: 830
+config_file: "{{ aliase }}.conf"
+config_dir: config_from_devices
+wait_time: 7200

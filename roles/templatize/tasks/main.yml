@@ -1,0 +1,45 @@
+---
+
+- name: Check if dest directory is present
+  file: path={{ config_templatized_dir }} state=directory
+  run_once: true
+
+- name: Copy file
+  copy: src={{ config_dir }}/{{ config_file }} dest={{ config_templatized_dir }}/{{ config_file }}
+
+- name: Interface Templatizer
+  replace: dest={{ config_templatized_dir }}/{{ config_file }} regexp={{ item.value.name }} replace="{{ '{{ topo[inventory_hostname]["'}}{{ item.key }}{{ '"]["name"]'}} }}"
+  with_dict: "{{ topo[inventory_hostname] | default({}) }}"
+  when: item is defined
+  
+- name: Hostname Templatizer
+  replace: dest={{ config_templatized_dir }}/{{ config_file }} regexp={{ inventory_hostname }} replace="{{ '{{ inventory_hostname }}'}}"
+
+- name: Aliase name Templatizer
+  replace: dest={{ config_templatized_dir }}/{{ config_file }} regexp={{ aliase }} replace="{{ '{{ aliase }}'}}"
+
+- name: mgmt_ip Templatizer
+  replace: dest={{ config_templatized_dir }}/{{ config_file }} regexp="{{ junos_host }}/{{ mgmt_sub_mask }}" replace="{{ '{{ junos_host }}/{{ mgmt_sub_mask }}' }}"
+
+- name: Publicip Templatizer
+  replace: dest={{ config_templatized_dir }}/{{ config_file }} regexp={{ item.value }} replace="{{ '{{ publicip["'}}{{ item.key}}{{ '"]'}}  }}"
+  with_dict: "{{ publicip }}"
+  when: item is defined
+
+- name: IntUplinkIPAddress Templatizer
+  replace: dest={{ config_templatized_dir }}/{{ config_file }} regexp={{ IntUplinkIPAddress }} replace="{{ '{{ IntUplinkIPAddress }}' }}"
+  when: IntUplinkIPAddress is defined
+
+- name: IntUplinkIPNextHop Templatizer
+  replace: dest={{ config_templatized_dir }}/{{ config_file }} regexp={{ IntUplinkIPNextHop }} replace="{{ '{{ IntUplinkIPNextHop }}' }}"
+  when: IntUplinkIPNextHop is defined
+
+- name: Gateway Templatizer
+  replace: dest={{ config_templatized_dir }}/{{ config_file }} regexp={{ mgmt_sub_gw }} replace="{{ '{{ mgmt_sub_gw }}'}}"
+
+- name: EncryptedPassword Templatizer
+  replace: dest={{ config_templatized_dir }}/{{ config_file }} regexp="{{ encrypted_password }}" replace="{{ '{{ encrypted_password }}' }}"
+
+# No longer in use:
+# - name: ReservationUser Templatizer
+#  replace: dest={{ config_templatized_dir }}/{{ config_file }} regexp="{{ reservation_user }}" replace="{{ '{{ reservation_user }}' }}"

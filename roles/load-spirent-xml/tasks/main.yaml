@@ -1,0 +1,14 @@
+- name: Load config from xml file uploaded to lab server
+  connection: local
+  uri:
+    url: http://{{ ansible_ssh_host }}:{{ rest_port }}/stcapi/perform
+    method: POST
+    headers:
+      Content-Type: "application/x-www-form-urlencoded"
+      X-STC-API-Session: "{{ session_id }}"
+    body: "command=loadfromxml&filename=spirent"
+    return_content: yes
+    status_code: 200
+    body_format: json
+  run_once: true
+
