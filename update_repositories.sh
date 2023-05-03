@@ -18,8 +18,8 @@ git_path_jcl="--git-dir=$ansible_playbook_path/.git --work-tree=$ansible_playboo
 
 ##################################### user_input for repository list
 repo_array=()
-echo -e "Enter the repo clone URLs (SSH or HTTPS) for the repos that you want to update:
-(Press Enter, then, Ctrl+D at the end of the list)\n"
+echo -e $'Enter the repo clone URLs (SSH or HTTPS) for the repos that you want to update:
+(Press Enter, then, Ctrl+D at the end of the list)\n'
 
 while read repo
 do
@@ -51,9 +51,11 @@ fi
 
 ######################################## copy and remove files
 for repo_path in  "$default_path"/*; do 
-   rm -rf $repo_path/{ensure-kvm-running.yml,get-config-from-device.yml,install-config-to-device.yml,install-vxlan-linux-host.yml,push-directory-to-git.yml,renew-serial-id-vMX_NV.yaml,config_cleanup.py,get-encrypted-password.py,docs,group_vars,library,roles,README.md}
+   rm -rf $repo_path/{ensure-kvm-running.yml,get-config-from-device.yml,install-config-to-device.yml,install-vxlan-linux-host.yml,push-directory-to-git.yml,renew-serial-id-vMX_NV.yaml,config_cleanup.py,get-encry
+pted-password.py,docs,group_vars,library,roles,README.md}
 
-   #cp -rf $ansible_playbook_path/{ensure_kvm_running.yml,get_config_from_device.yml,install_config_to_device.yml,install_vxlan_linux_host.yml,push_directory_to_git.yml,python_version_check.yml,upgrade_junos.yml,docs,group_vars,python_scripts,roles,shell_scripts,README.md} $repo_path
+   #cp -rf $ansible_playbook_path/{ensure_kvm_running.yml,get_config_from_device.yml,install_config_to_device.yml,install_vxlan_linux_host.yml,push_directory_to_git.yml,python_version_check.yml,upgrade_junos.yml
+,docs,group_vars,python_scripts,roles,shell_scripts,README.md} $repo_path
 
    echo -e "\n**** For $repo_path: ****"
    echo -e "\nRemoved Python2 supported files. Creating local commit Step 1/2.."
@@ -61,10 +63,10 @@ for repo_path in  "$default_path"/*; do
    git $git_path add --all
    git $git_path commit -m "Updated Ansible playbooks using update_repositories.sh - Step 1: Removed Python2 supported files from repo."
 
-   git $git_path remote add JCL "git@git.cloudlabs.juniper.net:JCL/JCL_Ansible_Playbooks.git"
+   git $git_path remote add JCL "https://git.cloudlabs.juniper.net/JCL/JCL_Ansible_Playbooks.git"
    git $git_path fetch JCL
-   git $git_path merge JCL/collections
-   git ls-tree --name-only JCL/collections | while read file; do if [ ! -f "$file" ]; then git checkout JCL/collections -- "$file"; fi; 
+   git $git_path merge JCL/collections -m "Merging latest Python3 updates from JCL_Ansible_Playbooks official: collections branch"
+   git $git_path ls-tree --name-only JCL/collections | while read file; do if [ ! -f "$file" ]; then git $git_path checkout JCL/collections -- "$file"; echo -e "$file"; fi; 
 done;
    rm -rf $repo_path/motd
    echo -e "Added/updated Python3 supported files. Creating local commit Step 2/2.."
