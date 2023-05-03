@@ -1,0 +1,57 @@
+---
+- name: Define shell_command
+  set_fact:
+    shell_command: "{{ 'curl -k -X POST --data-binary \"@ixia.ixncfg\" -H \"content-type:application/octet-stream\" http://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/files?filename=ixia.ixncfg' if VersionSelected == 8.31 else 'curl -k -X POST --data-binary \"@ixia.ixncfg\" -H \"content-type:application/octet-stream\" https://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/files?filename=ixia.ixncfg' }}"
+
+- name: Display shell_command
+  debug: msg={{ shell_command }}
+
+- name: Upload config file
+  shell: "{{ shell_command }}"
+  connection: local
+
+- name: Define load_config_url
+  set_fact:
+    load_config_url: "{{ 'http://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/operations/loadconfig' if VersionSelected  == 8.31 else 'https://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/operations/loadconfig' }}"
+
+- name: Display load_config_url
+  debug: msg={{ load_config_url }}
+
+- name: load config file
+  uri:
+    url: "{{ load_config_url }}"
+    validate_certs: no
+    method: POST
+    headers:
+      Content-Type: "application/json"
+    body:
+      arg1:
+        /api/v1/sessions/1/ixnetwork/files/ixia.ixncfg
+    body_format: json
+    status_code: 202
+  register: response
+  connection: local
+
+- name: Pause for config to be loaded
+  pause:
+    seconds: 80
+
+- name: Define assign_ports_url
+  set_fact:
+    assign_ports_url: "{{ 'http://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/operations/assignports' if VersionSelected == 8.31 else 'https://{{ ansible_ssh_host }}:{{ rest_port }}/api/v1/sessions/1/ixnetwork/operations/assignports' }}"
+
+- name: Display assign_ports_url
+  debug: msg={{ assign_ports_url }}
+
+- name: Assign Ports
+  uri:
+    url: "{{ assign_ports_url }}"
+    validate_certs: no
+    method: POST
+    headers:
+      Content-Type: "application/json"
+    body:  "{{ rest_body }}"
+    body_format: json
+    status_code: 202
+  register: response
+  connection: local
