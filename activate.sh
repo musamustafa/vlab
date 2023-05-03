@@ -10,13 +10,13 @@ echo "Current working dir : $PWD"
 echo "Script location path (dir) : $_base"
 
 cd $_base
-ln -fs /usr/bin/python3 /usr/bin/python
-source ~/.venv/python3/bin/activate
+ln -fs /usr/bin/python2 /usr/bin/python
+source ~/.venv/python2/bin/activate
 
 python --version
 ansible --version
 
-if test -f "/etc/ansible/hosts.underscore.bak"; then
-    echo "Underscore origin Inventory backup present, switching"
-    cp -f /etc/ansible/hosts.underscore.bak /etc/ansible/hosts
+if test -f "/etc/ansible/hosts.hyphen.bak"; then
+    echo "hyphen origin Inventory backup present, switching"
+    cp -f /etc/ansible/hosts.hyphen.bak /etc/ansible/hosts
 fi
