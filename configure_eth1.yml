@@ -1,0 +1,32 @@
+---
+- name: Configure eth1 interface
+  hosts: localhost
+  gather_facts: false
+
+  vars_prompt:
+    - name: ip_address
+      prompt: "Enter IP address for eth1 interface"
+      private: false
+    - name: prefix
+      prompt: "Enter network prefix length for eth1 interface (e.g. 24)"
+      private: false  
+
+  tasks:
+    - name: Update ifcfg-eth1 file - Remove existing IP address and prefix
+      lineinfile:
+        path: /etc/sysconfig/network-scripts/ifcfg-eth1
+        state: absent
+        regexp: '^(IPADDR|PREFIX)='
+      become: true
+
+    - name: Update ifcfg-eth1 file - Add input IP address and prefix
+      blockinfile:
+        path: /etc/sysconfig/network-scripts/ifcfg-eth1
+        block: |
+          IPADDR={{ ip_address }}
+          PREFIX={{ prefix }}
+      become: true
+
+    - name: Restart network service
+      shell: nmcli networking off && nmcli networking on && systemctl restart NetworkManager 
+      become: true
