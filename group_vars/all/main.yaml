@@ -3,7 +3,7 @@ build_dir: "{{ tmp_dir }}"
 junos_conf_dir: config
 junos_conf_file: "{{ inventory_hostname }}.conf"
 junos_conf: "{{ junos_conf_dir }}/{{ junos_conf_file }}"
-netconf_port: 830
+netconf_port: 22 
 spirent_session_name: JCLSession
 visibility: private
 status: 0

@@ -16,11 +16,11 @@ def getencryptedpass(host, user, password):
            output = data.xpath('/rpc-reply/configuration/system/login/user[name="%s"]/authentication/encrypted-password'% user)
           # print etree.tostring(output[0], method='text') 
            env = etree.tostring(output[0], method='text')
-           print env
+           print(env)
 #           print ("Close device session")
            device.close()  
          except Exception as err:
-           print err
+           print(err)
            sys.exit()
 #         return etree.tostring(output[0], method='text')
            

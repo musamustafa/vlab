@@ -1,6 +1,6 @@
 ---
 - name: Checking NETCONF connectivity
-  wait_for: host={{ junos_host }} port=830  timeout=5
+  wait_for: host={{ junos_host }} port=22  timeout=5
 - name: Pushing config
   juniper_junos_config: 
       host={{ junos_host }}

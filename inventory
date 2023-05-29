@@ -1,0 +1,28 @@
+[all:children]
+juniper
+linux
+
+[juniper:children]
+_vMX
+
+[_vMX:children]
+vcp1
+vcp2
+vcp5
+vcp6
+vcp9
+[vcp5]
+vcp50 junos_host=5.5.5.2  mgmt_sub_gw=5.5.5.1 mgmt_sub_mask=24 aliase=vcp5
+
+[vcp9]
+vcp90 junos_host=5.5.5.3  mgmt_sub_gw=5.5.5.1 mgmt_sub_mask=24 aliase=vcp9
+
+[vcp1]                                                                    
+vcp10 junos_host=5.5.5.4  mgmt_sub_gw=5.5.5.1 mgmt_sub_mask=24 aliase=vcp1
+                                                                          
+[vcp2]                                                                    
+vcp20 junos_host=5.5.5.6  mgmt_sub_gw=5.5.5.1 mgmt_sub_mask=24 aliase=vcp2
+
+[vcp6]                                                                    
+vcp60 junos_host=5.5.5.7  mgmt_sub_gw=5.5.5.1 mgmt_sub_mask=24 aliase=vcp6
+                                                                          
